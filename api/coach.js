@@ -1,5 +1,12 @@
+import { checkRateLimit } from "../lib/ratelimit.js";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+  const limit = checkRateLimit(req);
+  if (!limit.ok) {
+    res.setHeader("Retry-After", String(limit.retryAfter));
+    return res.status(429).json({ error: "Rate limit exceeded. Try again later." });
+  }
   const key = process.env.ANTHROPIC_API_KEY;
   if (!key) return res.status(500).json({ error: "Server missing ANTHROPIC_API_KEY" });
   try {

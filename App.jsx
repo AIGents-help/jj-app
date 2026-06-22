@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+﻿import { useState, useEffect, useRef, useCallback } from "react";
 
 /* ═══════════════════════════════════════════════════════════════════
    THE 1 MONTH JOURNEY — v3 AI Edition
@@ -154,12 +154,21 @@ const CHALLENGES=[
   "Do something for YOU","Don\u2019t complain entire day",
 ];
 
+/* ── Needs Taxonomy ─────────────────────────────────────────────── */
+const NEEDS_TAXONOMY=[
+  {key:"certainty",label:"Certainty"},{key:"variety",label:"Variety"},
+  {key:"significance",label:"Significance"},{key:"connection",label:"Connection"},
+  {key:"growth",label:"Growth"},{key:"contribution",label:"Contribution"},
+];
+
 /* ── Schema ──────────────────────────────────────────────────────── */
 const blankTodo=()=>({text:"",done:false});
 const blankEntry=()=>({
   wakingThoughts:"",morningWordObj:null,morningRate:0,morningRoutine:false,
+  wakeTime:"",deepSleepPct:null,sleepSource:"manual",
+  nameItCollapsed:true,
   challenge:"",challengeDone:false,
-  todos:[blankTodo(),blankTodo(),blankTodo()],
+  todos:[blankTodo(),blankTodo(),blankTodo()],secondaryActivities:[],
   focusMorning:"",focusMidday:"",focusEvening:"",
   reflect:"",photo:null,
   dayWordObj:null,dayRate:0,effortRate:0,
@@ -552,7 +561,7 @@ export default function JourneyJournal(){
   const[saved,setSaved]=useState(true);
   const[meta,setMeta]=useState(null);
   const[entry,setEntry]=useState(blankEntry());
-  const[outcomes,setOutcomes]=useState({required:[blankOutcome(),blankOutcome(),blankOutcome()],letter:""});
+  const[outcomes,setOutcomes]=useState({required:[blankOutcome(),blankOutcome(),blankOutcome()],letter:"",mode:"main",needs:{}});
   const[monthMap,setMonthMap]=useState({});
   const[showRecap,setShowRecap]=useState(false);
   const[preplanned,setPreplanned]=useState(false);
@@ -589,7 +598,8 @@ export default function JourneyJournal(){
           setPreplanned(true);
         }
       }
-      const o=await sget("journey:outcomes");if(o)setOutcomes(o);
+      const o=await sget("journey:outcomes");
+      if(o)setOutcomes({mode:"main",needs:{},...o});
       const mm=await sget("journey:month");if(mm)setMonthMap(mm);
       setLoading(false);
     })();
@@ -745,11 +755,42 @@ export default function JourneyJournal(){
                 <VoiceArea rows={3} value={entry.wakingThoughts} placeholder="Roll over and write what\u2019s on your mind \u2014 dream recall and all\u2026" onChange={v=>up({wakingThoughts:v})}/>
               </div>
 
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                    <Label c="Wake Time"/>
+                    <input type="time" value={entry.wakeTime??""} onChange={e=>up({wakeTime:e.target.value})}
+                      className="w-full px-3 py-2 outline-none"
+                      style={{border:`1px solid ${LINE}`,borderRadius:2,fontSize:13.5,color:NAVY,background:"#fff"}}/>
+                </div>
+                <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Label c="Deep Sleep %"/>
+                      <span style={{fontSize:9,fontWeight:800,letterSpacing:".08em",color:GRAY,textTransform:"uppercase",
+                        border:`1px solid ${LINE}`,borderRadius:2,padding:"1px 5px"}}>manual</span>
+                    </div>
+                    <input type="number" min={0} max={100} value={entry.deepSleepPct??""} placeholder="0–100"
+                      onChange={e=>up({deepSleepPct:e.target.value===""?null:Math.min(100,Math.max(0,+e.target.value))})}
+                      className="w-full px-3 py-2 outline-none"
+                      style={{border:`1px solid ${LINE}`,borderRadius:2,fontSize:13.5,color:NAVY,background:"#fff"}}/>
+                </div>
+              </div>
+
               {/* Word Picker — Morning */}
-              <div>
-                <Label c="Name It \u2014 choose one word that names how you woke up"/>
-                <WordPicker words={words} selected={entry.morningWordObj} onSelect={v=>up({morningWordObj:v})}/>
-                {entry.morningWordObj&&<div style={{fontSize:10.5,color:GRAY,marginTop:4}}>Score: {entry.morningWordObj.score}/10</div>}
+              <div style={{border:`1px solid ${LINE}`,borderRadius:3,overflow:"hidden"}}>
+                <button onClick={()=>up({nameItCollapsed:!(entry.nameItCollapsed??true)})}
+                  className="w-full flex items-center justify-between px-3 py-2"
+                  style={{background:"#fff",cursor:"pointer"}}>
+                    <Label c="Name It \u2014 choose one word that names how you woke up"/>
+                  <span style={{fontSize:13,color:GRAY,marginLeft:8,flexShrink:0}}>
+                    {(entry.nameItCollapsed??true)?"\u25b8":"\u25be"}
+                  </span>
+                </button>
+                {!(entry.nameItCollapsed??true)&&(
+                    <div style={{borderTop:1px solid }}>
+                      <WordPicker words={words} selected={entry.morningWordObj} onSelect={v=>up({morningWordObj:v})}/>
+                      {entry.morningWordObj&&<div style={{fontSize:10.5,color:GRAY,padding:"4px 12px"}}>Score: {entry.morningWordObj.score}/10</div>}
+                    </div>
+                )}
               </div>
 
               <div>
@@ -791,7 +832,40 @@ export default function JourneyJournal(){
                       </div>
                     </div>
                   ))}
+
+              {/* Secondary Activities */}
+              <div>
+                <Label c="Secondary Activities"/>
+                <div className="space-y-2">
+                    {(entry.secondaryActivities??[]).map((a,i)=>(
+                      <div key={a.id} className="flex gap-2 items-center">
+                        <Check checked={a.done} onToggle={()=>{
+                          const secondaryActivities=(entry.secondaryActivities??[]).map((x,j)=>j===i?{...x,done:!x.done}:x);
+                          up({secondaryActivities});
+                        }}/>
+                        <div style={{flex:1}}>
+                          <VoiceInput value={a.text} placeholder="Activity…"
+                            onChange={v=>{
+                              const secondaryActivities=(entry.secondaryActivities??[]).map((x,j)=>j===i?{...x,text:v}:x);
+                              up({secondaryActivities});
+                            }}
+                            style={{textDecoration:a.done?"line-through":"none"}}/>
+                        </div>
+                        <button onClick={()=>{
+                          const secondaryActivities=(entry.secondaryActivities??[]).filter((_,j)=>j!==i);
+                          up({secondaryActivities});
+                        }} style={{flexShrink:0,width:24,height:24,border:1px solid ,borderRadius:2,
+                          background:"#fff",color:GRAY,cursor:"pointer",fontSize:16,lineHeight:1}}>×</button>
+                      </div>
+                    ))}
                 </div>
+                <button onClick={()=>{
+                    const secondaryActivities=[...(entry.secondaryActivities??[]),{id:crypto.randomUUID(),text:"",done:false}];
+                    up({secondaryActivities});
+                }} style={{marginTop:6,fontSize:11,fontWeight:800,color:NAVY,background:"none",
+                border:`1px dashed ${LINE}`,borderRadius:2,padding:"5px 12px",cursor:"pointer",letterSpacing:".05em"}}>
+                + Add activity
+                </button>
               </div>
 
               <div>
@@ -942,13 +1016,26 @@ export default function JourneyJournal(){
       {/* ═══ OUTCOMES ═══ */}
       {tab==="outcomes"&&(
         <main className="max-w-xl mx-auto px-4 pt-5 space-y-5">
+          {/* Mode toggle */}
+          <div className="flex" style={{border:`2px solid ${NAVY}`,borderRadius:2,overflow:"hidden"}}>
+            {[["main","3 Main Outcomes"],["needs","Needs Driven"]].map(([k,t])=>(
+              <button key={k} onClick={()=>upO({...outcomes,mode:k})} className="flex-1 py-2"
+                style={{fontSize:11.5,fontWeight:800,letterSpacing:".05em",textTransform:"uppercase",
+                  background:(outcomes.mode??"main")===k?NAVY:"#fff",
+                  color:(outcomes.mode??"main")===k?PAPER:NAVY}}>
+                {t}
+              </button>
+            ))}
+          </div>
+
+          {(outcomes.mode??"main")==="main"&&<>
           <Banner sub="One month of intentional action.">3 Required Outcomes</Banner>
           {outcomes.required.map((o,i)=>(
             <div key={i} className="p-3 space-y-2" style={{border:`1.5px solid ${NAVY}`,background:"#fff",borderRadius:2}}>
               <div style={{background:NAVY,color:PAPER,fontWeight:800,fontSize:11,padding:"2px 10px",display:"inline-block"}}>OUTCOME {i+1}</div>
-              <VoiceInput value={o.title} placeholder="The outcome \u2014 specific, finished-tense"
+              <VoiceInput value={o.title} placeholder="The outcome — specific, finished-tense"
                 onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,title:v}:x);upO({...outcomes,required:r});}}/>
-              <VoiceArea rows={2} value={o.tasks} placeholder="Tasks that make it inevitable\u2026"
+              <VoiceArea rows={2} value={o.tasks} placeholder="Tasks that make it inevitable…"
                 onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,tasks:v}:x);upO({...outcomes,required:r});}}/>
               <VoiceArea rows={1} value={o.why} placeholder="Why:"
                 onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,why:v}:x);upO({...outcomes,required:r});}}/>
@@ -958,6 +1045,21 @@ export default function JourneyJournal(){
           <VoiceArea rows={9} value={outcomes.letter}
             placeholder="Write a letter to yourself being thankful for achieving your three main outcomes. What does it feel like? Who have you become?"
             onChange={v=>upO({...outcomes,letter:v})}/>
+          </>}
+
+          {(outcomes.mode??"main")==="needs"&&(
+            <div className="space-y-4">
+              <Banner sub="Which human needs is this month serving?">Needs Driven</Banner>
+              {NEEDS_TAXONOMY.map(({key,label})=>(
+                <div key={key}>
+                  <Label c={label}/>
+                  <VoiceArea rows={2} value={(outcomes.needs??{})[key]??""}
+                    placeholder={`How is this month serving your need for ${label.toLowerCase()}?`}
+                    onChange={v=>upO({...outcomes,needs:{...(outcomes.needs??{}),[key]:v}})}/>
+                </div>
+              ))}
+            </div>
+          )}
         </main>
       )}
 
