@@ -31,7 +31,7 @@ FORMAT: 2–3 tight paragraphs + one closing question.`;
 // Format: [text, attr] OR [before, "REFUZE_word", after, attr]
 const MQ=[
   ["I ","REFUZE"," to allow society to dictate my limitations.","Tony Kates"],
-  ["Reality doesn\u2019t deliver. Reality reveals.","Tony Kates"],
+  ["Reality doesn’t deliver. Reality reveals.","Tony Kates"],
   ["Do you wake up FOR something or BECAUSE of something?","Tony Kates"],
   ["Life by default is blindness. Life by design is awareness.","Tony Kates"],
   ["A farmer does not pray for crops. He prepares for them.","Tony Kates"],
@@ -44,8 +44,8 @@ const MQ=[
   ["Break the model. Break the rules. Break the version of yourself that believes ignorance is safety.","Tony Kates"],
   ["A wait-ed life is a wasted life.","Tony Kates"],
   ["Humans have no purpose, only potential.","Tony Kates"],
-  ["Rooms become available to you, when you open the door\u2026","Tony Kates"],
-  ["Don\u2019t pray and wish, do and create\u2026","Tony Kates"],
+  ["Rooms become available to you, when you open the door…","Tony Kates"],
+  ["Don’t pray and wish, do and create…","Tony Kates"],
   ["Our every advancement has been at the result of someone first deciding to ","REFUZE",".","Tony Kates"],
   ["When conditions are made conducive, potential becomes reality.","Kates Doctrine"],
   ["Awareness, Alignment, Activation. In that order. Every time.","Kates Doctrine"],
@@ -55,45 +55,45 @@ const MQ=[
   ["Opportunities are not drawn to you. They already exist, everywhere, constantly.","Tony Kates"],
   ["You stop asking, Why me? and start asking, What does this mean?","Tony Kates"],
   ["Events are clay. Awareness is the sculptor.","Tony Kates"],
-  ["I don\u2019t compete, I combine!!!","Tony Kates"],
+  ["I don’t compete, I combine!!!","Tony Kates"],
   ["I represent freedom.","Tony Kates"],
-  ["Pain doesn\u2019t have to hurt.","Tony Kates"],
-  ["","REFUZE"," to live average. Push the needle, raise the bar\u2026","Tony Kates"],
-  ["Every accomplishment you admire is not proof of someone else\u2019s superiority. It is proof of your possibility.","Tony Kates"],
+  ["Pain doesn’t have to hurt.","Tony Kates"],
+  ["","REFUZE"," to live average. Push the needle, raise the bar…","Tony Kates"],
+  ["Every accomplishment you admire is not proof of someone else’s superiority. It is proof of your possibility.","Tony Kates"],
   ["Seek, Learn, Apply, Master. SLAM it.","Kates Doctrine"],
 ];
 
 /* ── Tony Kates Evening Quotes (31) ─────────────────────────────── */
 const EQ=[
   ["Never let the truth get in the way of a good story.","Tony Kates"],
-  ["We don\u2019t make the right answers, we make our answers right.","Kates Doctrine"],
+  ["We don’t make the right answers, we make our answers right.","Kates Doctrine"],
   ["Do you want to wish you had or BE GLAD YOU DID?!!","Tony Kates"],
-  ["If all good things come to an end then all bad things will also\u2026","Tony Kates"],
-  ["Even a broken clock is right more times than a wrong one\u2026","Tony Kates"],
-  ["L.I.F.E. \u2014 Little Incidents Finding Expression. No good or bad. You give it meaning.","Kates Doctrine"],
-  ["How old would you be if you didn\u2019t know how old you are?","Tony Kates"],
-  ["This is not a revolution, it\u2019s an inevitable evolution\u2026","Tony Kates"],
+  ["If all good things come to an end then all bad things will also…","Tony Kates"],
+  ["Even a broken clock is right more times than a wrong one…","Tony Kates"],
+  ["L.I.F.E. — Little Incidents Finding Expression. No good or bad. You give it meaning.","Kates Doctrine"],
+  ["How old would you be if you didn’t know how old you are?","Tony Kates"],
+  ["This is not a revolution, it’s an inevitable evolution…","Tony Kates"],
   ["Have a heart, use your brain, trust your gut, try to stay sane.","Tony Kates"],
   ["Silence is also an answer.","Tony Kates"],
-  ["That isn\u2019t wisdom. That\u2019s anesthesia.","Tony Kates"],
+  ["That isn’t wisdom. That’s anesthesia.","Tony Kates"],
   ["I was told I think differently than 80% of the men on the planet. I want it to be 90%.","Tony Kates"],
-  ["Just because you get loud, doesn\u2019t make you right!","Tony Kates"],
-  ["That\u2019s just the way that one went.","Tony Kates"],
+  ["Just because you get loud, doesn’t make you right!","Tony Kates"],
+  ["That’s just the way that one went.","Tony Kates"],
   ["I bled for this knowledge.","Tony Kates"],
   ["What are they exposing about themselves?","Tony Kates"],
   ["I am Curious, Creative, and Consistent.","Tony Kates"],
   ["Lead with generosity.","Tony Kates"],
   ["Not polished. Not sugar-coated. Just truth, as I lived it.","Tony Kates"],
-  ["My story is not about me\u2026","Tony Kates"],
+  ["My story is not about me…","Tony Kates"],
   ["I chose to bleed, break, and rebuild so I could become a father of value.","Tony Kates"],
   ["Pain is the microscope. Use it.","Tony Kates"],
   ["Reset, Equip, Forward, Unique, monetiZe Value, Empower. This is the OS.","REFUZE"],
-  ["F.E.A.R. \u2014 Find Examples And Repeat. Just keep going!!","Kates Doctrine"],
-  ["'Luck' is the language of the unaware. They don\u2019t see the soil. They only see the harvest.","Tony Kates"],
+  ["F.E.A.R. — Find Examples And Repeat. Just keep going!!","Kates Doctrine"],
+  ["'Luck' is the language of the unaware. They don’t see the soil. They only see the harvest.","Tony Kates"],
   ["An unexamined life is a waste of potential.","Kates Doctrine"],
   ["Go break shit.","Tony Kates"],
-  ["I don\u2019t want to live forever\u2026 I want to exist for all eternity!","Tony Kates"],
-  ["What you notice at night is what you\u2019ll see tomorrow.","Tony Kates"],
+  ["I don’t want to live forever… I want to exist for all eternity!","Tony Kates"],
+  ["What you notice at night is what you’ll see tomorrow.","Tony Kates"],
   ["Not even death will kill me.","Tony Kates"],
   ["What else are you blind to right now?","Tony Kates"],
 ];
@@ -141,17 +141,17 @@ const CHALLENGES=[
   "Get out of breath","Empty your email inbox to zero",
   "Fast for 24 hours","Track everything you eat today",
   "Call a distant friend just to say Hi","Take an alternate route",
-  "Write an \u201cI Like This About You\u201d note and mail it","Take a selfie with a stranger",
+  "Write an “I Like This About You” note and mail it","Take a selfie with a stranger",
   "Talk to someone about your passion","Complete a bucket list item",
   "Do something FUN","Post a secret on social media",
-  "Take a 30 minute walk / run","Try something random \u2014 food, drink, music",
+  "Take a 30 minute walk / run","Try something random — food, drink, music",
   "Watch a documentary","Read an entire chapter of a non-fiction book",
   "Research a topic you know nothing about","24 Hour Media Blackout",
   "No meat for a day","Do something that scares you",
-  "Photograph something you\u2019re grateful for","Meditate at least 20 minutes",
-  "Start a new habit you\u2019ve been putting off","Do something totally self-less",
-  "Meet someone out for lunch","Don\u2019t lie all day",
-  "Do something for YOU","Don\u2019t complain entire day",
+  "Photograph something you’re grateful for","Meditate at least 20 minutes",
+  "Start a new habit you’ve been putting off","Do something totally self-less",
+  "Meet someone out for lunch","Don’t lie all day",
+  "Do something for YOU","Don’t complain entire day",
 ];
 
 /* ── Needs Taxonomy ─────────────────────────────────────────────── */
@@ -195,9 +195,9 @@ async function callCoach(content){
       body:JSON.stringify({content,system:DOCTRINE_PROMPT})
     });
     const d=await r.json();
-    if(!r.ok) return d.error||"The coach is offline. Write it yourself \u2014 you already know.";
-    return d.text||"The coach is offline. Write it yourself \u2014 you already know.";
-  }catch{return"Connection failed. What\u2019s the one thing you\u2019d write right now if this worked?";}
+    if(!r.ok) return d.error||"The coach is offline. Write it yourself — you already know.";
+    return d.text||"The coach is offline. Write it yourself — you already know.";
+  }catch{return"Connection failed. What’s the one thing you’d write right now if this worked?";}
 }
 
 async function compressImage(file){
@@ -308,7 +308,7 @@ function Check({checked,onToggle,label,big}){
         style={{width:big?28:20,height:big?28:20,border:`2px solid ${checked?NAVY:LINE}`,
           borderRadius:2,background:checked?NAVY:"#fff",color:"#fff",
           fontSize:big?17:12,fontWeight:900,transition:"all .12s"}}>
-        {checked?"\u2713":""}
+        {checked?"✓":""}
       </span>
       {label&&<span style={{fontSize:11.5,fontWeight:700,letterSpacing:".05em",textTransform:"uppercase",color:NAVY}}>{label}</span>}
     </button>
@@ -335,10 +335,10 @@ function Quote({runs}){
     return(
       <div className="text-center px-4 py-3" style={{borderTop:`1px solid ${LINE}`,borderBottom:`1px solid ${LINE}`}}>
         <span style={{fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:13.5,color:NAVY2}}>
-          {"\u201C"}{runs[0]}{"\u201D"}
+          {"“"}{runs[0]}{"”"}
         </span>
         <span style={{fontFamily:"Georgia,serif",fontWeight:700,fontStyle:"italic",fontSize:12,color:NAVY,marginLeft:6}}>
-          {"\u2014 "}{runs[1]}
+          {"— "}{runs[1]}
         </span>
       </div>
     );
@@ -346,10 +346,10 @@ function Quote({runs}){
   return(
     <div className="text-center px-4 py-3" style={{borderTop:`1px solid ${LINE}`,borderBottom:`1px solid ${LINE}`}}>
       <span style={{fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:13.5,color:NAVY2}}>
-        {"\u201C"}{runs[0]}<strong style={{color:RED,fontStyle:"normal"}}>{runs[1]}</strong>{runs[2]}{"\u201D"}
+        {"“"}{runs[0]}<strong style={{color:RED,fontStyle:"normal"}}>{runs[1]}</strong>{runs[2]}{"”"}
       </span>
       <span style={{fontFamily:"Georgia,serif",fontWeight:700,fontStyle:"italic",fontSize:12,color:NAVY,marginLeft:6}}>
-        {"\u2014 "}{runs[3]}
+        {"— "}{runs[3]}
       </span>
     </div>
   );
@@ -364,7 +364,7 @@ function AICard({text,loading,label}){
         <span style={{fontSize:9.5,fontWeight:800,letterSpacing:".14em",color:AMBER,textTransform:"uppercase"}}>{label||"Awareness Coach"}</span>
       </div>
       {loading
-        ?<div style={{color:"#5A7090",fontSize:12,fontStyle:"italic"}}>The coach is in your corner\u2026</div>
+        ?<div style={{color:"#5A7090",fontSize:12,fontStyle:"italic"}}>The coach is in your corner…</div>
         :<div style={{color:"#D4DDE8",fontSize:13,lineHeight:1.65,whiteSpace:"pre-wrap"}}>{text}</div>
       }
     </div>
@@ -378,7 +378,7 @@ function CoachBtn({onClick,loading,label}){
         background:loading?"#1A2535":COAL,border:`1.5px solid ${AMBER}`,borderRadius:2,
         color:AMBER,fontSize:11,fontWeight:800,letterSpacing:".1em",cursor:loading?"default":"pointer",opacity:loading?.7:1}}>
       <span style={{width:7,height:7,borderRadius:"50%",background:AMBER,display:"inline-block"}}/>
-      {loading?"THINKING\u2026":label}
+      {loading?"THINKING…":label}
     </button>
   );
 }
@@ -389,7 +389,7 @@ function WordPicker({words,selected,onSelect}){
     <div style={{border:`1px solid ${LINE}`,borderRadius:3,overflow:"hidden",maxHeight:300,overflowY:"auto"}}>
       <div className="px-3 py-1.5" style={{background:COAL,position:"sticky",top:0,zIndex:1}}>
         <span style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>
-          POSITIVE \u2191 \u00b7 SCROLL \u00b7 \u2193 NEGATIVE
+          POSITIVE ↑ · SCROLL · ↓ NEGATIVE
         </span>
         {selected&&<span style={{float:"right",color:PAPER,fontSize:9,fontWeight:700}}>Selected: {selected.word}</span>}
       </div>
@@ -446,7 +446,7 @@ function PhotoCapture({photo,onChange}){
             style={{width:"100%",height:100,border:`2px dashed ${LINE}`,borderRadius:2,
               background:"#fff",color:GRAY,cursor:"pointer",display:"flex",
               alignItems:"center",justifyContent:"center",gap:8,fontSize:13,fontWeight:700}}>
-            {compressing?"Compressing\u2026":"📷 Add Today\u2019s Photo"}
+            {compressing?"Compressing…":"📷 Add Today’s Photo"}
           </button>
         )}
         <input ref={ref} type="file" accept="image/*" capture="environment"
@@ -486,7 +486,7 @@ function MonthlyRecap({dayN,onClose}){
           <button onClick={onClose} style={{color:"#8FA0BC",background:"none",border:"none",fontSize:22,cursor:"pointer"}}>✕</button>
         </div>
         {loading?(
-          <div style={{padding:40,textAlign:"center",color:GRAY}}>Loading your month\u2026</div>
+          <div style={{padding:40,textAlign:"center",color:GRAY}}>Loading your month…</div>
         ):(
           <div style={{padding:16}}>
             <div style={{...stripes,height:8,marginBottom:12,opacity:.6}}/>
@@ -661,7 +661,7 @@ export default function JourneyJournal(){
     const outList=outcomes.required.map((o,i)=>`${i+1}. ${o.title||"(not set)"}`).join("\n");
     const res=await callCoach(
       `Day ${dayN} of 31. My 3 month outcomes:\n${outList}\n\n`+
-      (yEntry.corrections?`Yesterday\u2019s corrections: ${yEntry.corrections}\n`:"")+
+      (yEntry.corrections?`Yesterday’s corrections: ${yEntry.corrections}\n`:"")+
       (yEntry.jeepEffect?`What I noticed yesterday: ${yEntry.jeepEffect}\n`:"")+
       `\nPrime my awareness lens for today.`
     );
@@ -672,13 +672,13 @@ export default function JourneyJournal(){
     setInsightL(true);
     const res=await callCoach(
       `Day ${dayN} of 31.\nDay rating: ${entry.dayRate}/10 | Effort rating: ${entry.effortRate}/10\n`+
-      `Today\u2019s word: ${entry.dayWordObj?.word||"(none)"} (score ${entry.dayWordObj?.score||0}/10)\n`+
+      `Today’s word: ${entry.dayWordObj?.word||"(none)"} (score ${entry.dayWordObj?.score||0}/10)\n`+
       `Corrections: ${entry.corrections||"(none)"}\n`+
       `Obstacle/Solution: ${entry.obstacleSolution||"(none)"}\n`+
       `Ah Hah: ${entry.ahHah||"(none)"}\n`+
-      `Jeep Effect \u2014 what I noticed: ${entry.jeepEffect||"(none)"}\n`+
-      `Tomorrow\u2019s 3 To-Do\u2019s planned: ${entry.tomorrowTodos.map(t=>t.text||"(empty)").join(" / ")}\n`+
-      `\nGive me my evening coaching. Apply the 50/50 Paradox to my ratings. Call out the pattern if it\u2019s there.`
+      `Jeep Effect — what I noticed: ${entry.jeepEffect||"(none)"}\n`+
+      `Tomorrow’s 3 To-Do’s planned: ${entry.tomorrowTodos.map(t=>t.text||"(empty)").join(" / ")}\n`+
+      `\nGive me my evening coaching. Apply the 50/50 Paradox to my ratings. Call out the pattern if it’s there.`
     );
     setInsight(res);setInsightL(false);
   };
@@ -691,7 +691,7 @@ export default function JourneyJournal(){
       const e=await sget(`journey:entry:${k}`);
       if(e)days.push({day:dayN-i,...e});
     }
-    if(!days.length){setPattern("No entries yet. Fill out at least a few days first \u2014 then come back.");setPatternL(false);return;}
+    if(!days.length){setPattern("No entries yet. Fill out at least a few days first — then come back.");setPatternL(false);return;}
     const summary=days.map(e=>[
       `Day ${e.day}:`,
       e.corrections&&`Corrections: ${e.corrections}`,
@@ -700,7 +700,7 @@ export default function JourneyJournal(){
       e.jeepEffect&&`Jeep Effect: ${e.jeepEffect}`,
       e.dayWordObj&&`Word: ${e.dayWordObj.word} (${e.dayWordObj.score}/10)`,
     ].filter(Boolean).join(" | ")).join("\n");
-    const res=await callCoach(`Last ${days.length} days:\n${summary}\n\nWhat pattern do I keep repeating? What obstacle won\u2019t name itself? What\u2019s compounding in the right direction?`);
+    const res=await callCoach(`Last ${days.length} days:\n${summary}\n\nWhat pattern do I keep repeating? What obstacle won’t name itself? What’s compounding in the right direction?`);
     setPattern(res);setPatternL(false);
   };
 
@@ -713,7 +713,7 @@ export default function JourneyJournal(){
 
   if(loading)return(
     <div className="min-h-screen flex items-center justify-center" style={{background:COAL}}>
-      <div style={{color:AMBER,fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:16}}>Opening your Journey\u2026</div>
+      <div style={{color:AMBER,fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:16}}>Opening your Journey…</div>
     </div>
   );
 
@@ -732,16 +732,16 @@ export default function JourneyJournal(){
         <div className="flex items-center justify-center flex-wrap gap-2 mt-2">
           <span style={{background:RED,color:"#fff",fontWeight:800,fontSize:11,padding:"3px 10px",letterSpacing:".08em"}}>DAY {dayN}/31</span>
           {streak>0&&<span style={{background:"#1A2D4A",color:AMBER,fontSize:10,fontWeight:700,padding:"3px 8px"}}>{streak} DAY STREAK</span>}
-          {preplanned&&phase==="morning"&&<span style={{background:"#1A3020",color:"#6ACA8A",fontSize:10,fontWeight:700,padding:"3px 8px"}}>✓ TONIGHT\u2019S PLAN LOADED</span>}
+          {preplanned&&phase==="morning"&&<span style={{background:"#1A3020",color:"#6ACA8A",fontSize:10,fontWeight:700,padding:"3px 8px"}}>✓ TONIGHT’S PLAN LOADED</span>}
           {isFuture&&<span style={{background:"#2A3B1A",color:AMBER,fontSize:10,fontWeight:700,padding:"3px 8px"}}>Planning ahead — {activeDateLabel}</span>}
         </div>
-        <div style={{position:"absolute",right:10,top:10,fontSize:9.5,color:saved?"#4A6080":AMBER}}>{saved?"saved":"\u25cf saving"}</div>
+        <div style={{position:"absolute",right:10,top:10,fontSize:9.5,color:saved?"#4A6080":AMBER}}>{saved?"saved":"● saving"}</div>
       </header>
       <div style={{...stripes,height:11}}/>
 
       {/* Nav */}
       <nav className="flex" style={{borderBottom:`2px solid ${NAVY}`}}>
-        {[["today","Today"],["outcomes","Outcomes"],["month","Month"],["coach","Coach \u25cf"]].map(([k,t])=>(
+        {[["today","Today"],["outcomes","Outcomes"],["month","Month"],["coach","Coach ●"]].map(([k,t])=>(
           <button key={k} onClick={()=>setTab(k)} className="flex-1 py-2.5"
             style={{fontSize:11.5,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",
               color:k==="coach"?(tab===k?"#fff":AMBER):(tab===k?PAPER:NAVY),
@@ -766,7 +766,7 @@ export default function JourneyJournal(){
               style={{fontSize:22,color:NAVY,background:"none",border:"none",cursor:"pointer",padding:"4px 12px",lineHeight:1}}>&#8250;</button>
           </div>
           <div className="flex gap-2 mb-4">
-            {[["morning","\u2600 Morning"],["evening","\u263E Evening"]].map(([k,t])=>(
+            {[["morning","☀ Morning"],["evening","☾ Evening"]].map(([k,t])=>(
               <button key={k} onClick={()=>setPhase(k)} className="flex-1 py-2"
                 style={{border:`2px solid ${NAVY}`,borderRadius:2,fontWeight:700,fontSize:13,
                   background:phase===k?NAVY:"#fff",color:phase===k?PAPER:NAVY}}>
@@ -784,7 +784,7 @@ export default function JourneyJournal(){
                 <div className="flex items-center justify-between px-3 py-2" style={{background:COAL}}>
                   <div>
                     <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>AWARENESS PRIMER</div>
-                    <div style={{color:"#5A7090",fontSize:10,marginTop:1}}>AI · Yesterday\u2019s log + your outcomes</div>
+                    <div style={{color:"#5A7090",fontSize:10,marginTop:1}}>AI · Yesterday’s log + your outcomes</div>
                   </div>
                   <CoachBtn onClick={primeMorning} loading={primerL} label="PRIME MY AWARENESS"/>
                 </div>
@@ -793,7 +793,7 @@ export default function JourneyJournal(){
 
               <div>
                 <Label c="Waking Thoughts"/>
-                <VoiceArea rows={3} value={entry.wakingThoughts} placeholder="Roll over and write what\u2019s on your mind \u2014 dream recall and all\u2026" onChange={v=>up({wakingThoughts:v})}/>
+                <VoiceArea rows={3} value={entry.wakingThoughts} placeholder="Roll over and write what’s on your mind — dream recall and all…" onChange={v=>up({wakingThoughts:v})}/>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -821,9 +821,9 @@ export default function JourneyJournal(){
                 <button onClick={()=>up({nameItCollapsed:!(entry.nameItCollapsed??true)})}
                   className="w-full flex items-center justify-between px-3 py-2"
                   style={{background:"#fff",cursor:"pointer"}}>
-                    <Label c="Name It \u2014 choose one word that names how you woke up"/>
+                    <Label c="Name It — choose one word that names how you woke up"/>
                   <span style={{fontSize:13,color:GRAY,marginLeft:8,flexShrink:0}}>
-                    {(entry.nameItCollapsed??true)?"\u25b8":"\u25be"}
+                    {(entry.nameItCollapsed??true)?"▸":"▾"}
                   </span>
                 </button>
                 {!(entry.nameItCollapsed??true)&&(
@@ -835,7 +835,7 @@ export default function JourneyJournal(){
               </div>
 
               <div>
-                <Label c="Rate 1\u201310"/>
+                <Label c="Rate 1–10"/>
                 <Rate value={entry.morningRate} onChange={n=>up({morningRate:n})}/>
               </div>
 
@@ -846,9 +846,9 @@ export default function JourneyJournal(){
 
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <Label c="Today\u2019s Challenge"/>
+                  <Label c="Today’s Challenge"/>
                   <button onClick={()=>up({challenge:CHALLENGES[Math.floor(Math.random()*CHALLENGES.length)]})}
-                    style={{fontSize:10,fontWeight:800,color:RED,background:"none",border:"none",cursor:"pointer"}}>DEAL ONE \u2192</button>
+                    style={{fontSize:10,fontWeight:800,color:RED,background:"none",border:"none",cursor:"pointer"}}>DEAL ONE →</button>
                 </div>
                 <div className="flex gap-2 items-start">
                   <div className="pt-2"><Check checked={entry.challengeDone} onToggle={()=>up({challengeDone:!entry.challengeDone})}/></div>
@@ -859,7 +859,7 @@ export default function JourneyJournal(){
               {/* Pre-planned To-Do's */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <Label c="Top 3 To Do\u2019s"/>
+                  <Label c="Top 3 To Do’s"/>
                   {preplanned&&<span style={{fontSize:9.5,color:"#5ABA7A",fontWeight:700}}>✓ Planned last night</span>}
                 </div>
                 <div className="space-y-2">
@@ -915,7 +915,7 @@ export default function JourneyJournal(){
                   {[["focusMorning","Morning"],["focusMidday","Midday"],["focusEvening","Evening"]].map(([k,t])=>(
                     <div key={k}>
                       <div style={{fontSize:9.5,color:GRAY,marginBottom:3}}>{t}</div>
-                      <VoiceInput value={entry[k]} placeholder="\u2014" onChange={v=>up({[k]:v})}/>
+                      <VoiceInput value={entry[k]} placeholder="—" onChange={v=>up({[k]:v})}/>
                     </div>
                   ))}
                 </div>
@@ -927,13 +927,13 @@ export default function JourneyJournal(){
             <div className="space-y-5">
               <Quote runs={eq}/>
 
-              <div><Label c="Reflect"/><VoiceArea rows={3} value={entry.reflect} placeholder="Lay back. How did the day shape up \u2014 and why?" onChange={v=>up({reflect:v})}/></div>
+              <div><Label c="Reflect"/><VoiceArea rows={3} value={entry.reflect} placeholder="Lay back. How did the day shape up — and why?" onChange={v=>up({reflect:v})}/></div>
 
               <PhotoCapture photo={entry.photo} onChange={v=>up({photo:v})}/>
 
               {/* Word Picker — Evening */}
               <div>
-                <Label c="Name the Day \u2014 scroll and choose your word"/>
+                <Label c="Name the Day — scroll and choose your word"/>
                 <WordPicker words={words} selected={entry.dayWordObj} onSelect={v=>up({dayWordObj:v})}/>
                 {entry.dayWordObj&&(
                   <div style={{fontSize:10.5,marginTop:4,color:GRAY}}>
@@ -946,7 +946,7 @@ export default function JourneyJournal(){
               <div style={{border:`1.5px solid ${NAVY}`,borderRadius:3,overflow:"hidden"}}>
                 <div className="px-3 pt-2 pb-1.5" style={{background:NAVY}}>
                   <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>THE 50/50 PARADOX</div>
-                  <div style={{color:"#8FA0BC",fontSize:10.5,marginTop:1}}>We don\u2019t make the right answers. We make our answers right.</div>
+                  <div style={{color:"#8FA0BC",fontSize:10.5,marginTop:1}}>We don’t make the right answers. We make our answers right.</div>
                 </div>
                 <div className="grid grid-cols-2" style={{background:"#fff"}}>
                   <div className="p-3" style={{borderRight:`1px solid ${LINE}`}}>
@@ -964,7 +964,7 @@ export default function JourneyJournal(){
                       ?<span style={{color:NAVY}}>Effort outran the outcome. The math catches up.</span>
                       :entry.dayRate>=entry.effortRate+2
                       ?<span style={{color:RED}}>The day rated high but effort lagged. What did you leave on the table?</span>
-                      :<span style={{color:NAVY2}}>Day {entry.dayRate} \u00b7 Effort {entry.effortRate}. The gap between these is the whole story.</span>
+                      :<span style={{color:NAVY2}}>Day {entry.dayRate} · Effort {entry.effortRate}. The gap between these is the whole story.</span>
                     }
                   </div>
                 )}
@@ -977,7 +977,7 @@ export default function JourneyJournal(){
               {/* Corrections */}
               <div className="grid grid-cols-2 gap-2">
                 <div><Label c="Corrections / Lesson Learned"/><VoiceArea rows={4} value={entry.corrections} placeholder="Where did you fall short? Own it." onChange={v=>up({corrections:v})}/></div>
-                <div><Label c="Obstacle / Solution"/><VoiceArea rows={4} value={entry.obstacleSolution} placeholder="Driving force \u2014 and what ensures it won\u2019t repeat." onChange={v=>up({obstacleSolution:v})}/></div>
+                <div><Label c="Obstacle / Solution"/><VoiceArea rows={4} value={entry.obstacleSolution} placeholder="Driving force — and what ensures it won’t repeat." onChange={v=>up({obstacleSolution:v})}/></div>
               </div>
 
               <div><Label c="Ah Hah"/><VoiceArea rows={2} value={entry.ahHah} placeholder="What stretched your mind today? Document it or lose it." onChange={v=>up({ahHah:v})}/></div>
@@ -986,10 +986,10 @@ export default function JourneyJournal(){
               <div style={{border:`1.5px solid ${AMBER}`,borderRadius:3,overflow:"hidden"}}>
                 <div className="px-3 py-2" style={{background:COAL}}>
                   <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>THE JEEP EFFECT</div>
-                  <div style={{color:"#5A7090",fontSize:10.5,marginTop:1}}>You didn\u2019t attract it. You conditioned yourself to see it.</div>
+                  <div style={{color:"#5A7090",fontSize:10.5,marginTop:1}}>You didn’t attract it. You conditioned yourself to see it.</div>
                 </div>
                 <VoiceArea rows={2} value={entry.jeepEffect}
-                  placeholder="What did you notice today that was ALWAYS THERE \u2014 opportunity, person, truth, resource\u2026 but invisible until now?"
+                  placeholder="What did you notice today that was ALWAYS THERE — opportunity, person, truth, resource… but invisible until now?"
                   onChange={v=>up({jeepEffect:v})}/>
               </div>
 
@@ -998,7 +998,7 @@ export default function JourneyJournal(){
               {/* ── TOMORROW'S 3 TO-DO'S ── Tony's core instruction */}
               <div style={{border:`2px solid ${NAVY}`,borderRadius:3,overflow:"hidden"}}>
                 <div className="px-3 py-2" style={{background:NAVY}}>
-                  <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>TOMORROW\u2019S 3 TO-DO\u2019S</div>
+                  <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>TOMORROW’S 3 TO-DO’S</div>
                   <div style={{color:"#8FA0BC",fontSize:10.5,marginTop:1}}>Plan now. Wake up with purpose. These get you out of bed.</div>
                 </div>
                 <div style={{background:"#fff",padding:12}} className="space-y-2">
@@ -1006,14 +1006,14 @@ export default function JourneyJournal(){
                     <div key={i} style={{display:"flex",gap:8,alignItems:"center"}}>
                       <span style={{fontSize:11,fontWeight:800,color:NAVY,minWidth:16}}>{i+1}.</span>
                       <div style={{flex:1}}>
-                        <VoiceInput value={t.text} placeholder={`To Do ${i+1} for tomorrow\u2026`}
+                        <VoiceInput value={t.text} placeholder={`To Do ${i+1} for tomorrow…`}
                           onChange={v=>upTTodo(i,{text:v})}/>
                       </div>
                     </div>
                   ))}
                   <div className="pt-1">
                     <Check big checked={entry.scheduledTomorrow}
-                      label="Tomorrow is planned. I\u2019m ready to close."
+                      label="Tomorrow is planned. I’m ready to close."
                       onToggle={()=>up({scheduledTomorrow:!entry.scheduledTomorrow})}/>
                   </div>
                 </div>
@@ -1044,7 +1044,7 @@ export default function JourneyJournal(){
                   <div>
                     <div style={{color:LINE,fontWeight:800,fontSize:14,letterSpacing:".06em"}}>100 % COMPLETE</div>
                     <div style={{fontSize:11,color:GRAY,marginTop:4}}>
-                      {[!entry.eveningRoutine&&"evening routine",!entry.scheduledTomorrow&&"plan tomorrow",entry.gratitude.trim()===""&&"gratitude"].filter(Boolean).join(" \u00b7 ")}
+                      {[!entry.eveningRoutine&&"evening routine",!entry.scheduledTomorrow&&"plan tomorrow",entry.gratitude.trim()===""&&"gratitude"].filter(Boolean).join(" · ")}
                     </div>
                   </div>
                 )}
@@ -1120,7 +1120,7 @@ export default function JourneyJournal(){
                     background:rec?.complete?NAVY:rec?.rate?"#EEF2F8":"#fff"}}>
                   <div style={{fontSize:8.5,color:rec?.complete?PAPER:GRAY,fontWeight:700}}>{d}</div>
                   <div style={{fontSize:13,fontWeight:900,color:rec?.complete?PAPER:isToday?RED:isActive?AMBER:GRAY}}>
-                    {rec?.complete?"\u2713":rec?.rate?rec.rate:"\u00b7"}
+                    {rec?.complete?"✓":rec?.rate?rec.rate:"·"}
                   </div>
                   {gap>=2&&<div style={{fontSize:6.5,color:AMBER,fontWeight:800}}>E+</div>}
                 </div>
@@ -1164,14 +1164,14 @@ export default function JourneyJournal(){
             <button onClick={()=>setShowRecap(true)}
               style={{width:"100%",padding:"12px 0",background:NAVY,color:AMBER,fontWeight:800,
                 fontSize:12,letterSpacing:".1em",border:"none",borderRadius:2,cursor:"pointer"}}>
-              ✦ VIEW MONTHLY RECAP \u2014 INSTAGRAM READY ✦
+              ✦ VIEW MONTHLY RECAP — INSTAGRAM READY ✦
             </button>
             <button onClick={async()=>{const m={start:todayKey()};setMeta(m);setMonthMap({});await sset("journey:meta",m);await sset("journey:month",{});}}
               style={{border:`2px solid ${NAVY}`,color:NAVY,fontWeight:800,fontSize:11,letterSpacing:".08em",padding:"8px 18px",background:"transparent",cursor:"pointer"}}>
-              START NEW MONTH \u2192
+              START NEW MONTH →
             </button>
             <div style={{fontFamily:"Georgia,serif",fontStyle:"italic",color:NAVY2,fontSize:13}}>
-              {"\u201C"}Everyday is Day 1.{"\u201D"} \u2014 Tony Kates
+              {"“"}Everyday is Day 1.{"”"} — Tony Kates
             </div>
           </div>
         </main>
@@ -1203,10 +1203,10 @@ export default function JourneyJournal(){
               <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em",marginBottom:4}}>ASK THE COACH</div>
               <div style={{color:"#5A7090",fontSize:10.5,marginBottom:8}}>Any question. Answered in doctrine voice. No filler.</div>
               <VoiceArea rows={3} value={askQ}
-                placeholder="What obstacle keeps showing up? Why can\u2019t I close the gap? What am I not seeing?"
+                placeholder="What obstacle keeps showing up? Why can’t I close the gap? What am I not seeing?"
                 onChange={setAskQ} dark/>
               <div className="flex justify-end mt-2">
-                <CoachBtn onClick={askCoach} loading={askL} label="ASK \u2192"/>
+                <CoachBtn onClick={askCoach} loading={askL} label="ASK →"/>
               </div>
               {(askL||askA)&&<AICard text={askA} loading={askL} label="Coach Response"/>}
             </div>
@@ -1217,11 +1217,11 @@ export default function JourneyJournal(){
               <div style={{color:PAPER,fontSize:9.5,fontWeight:800,letterSpacing:".12em"}}>THE DOCTRINE</div>
             </div>
             {[
-              ["Law of Awareness","\"Reality doesn\u2019t deliver. Reality reveals.\" Affirmations condition your lens. Awareness reveals what was always there. You didn\u2019t attract it \u2014 you conditioned yourself to see it."],
+              ["Law of Awareness","\"Reality doesn’t deliver. Reality reveals.\" Affirmations condition your lens. Awareness reveals what was always there. You didn’t attract it — you conditioned yourself to see it."],
               ["The Jeep Effect","You signed the papers and suddenly Jeeps were everywhere. Nothing changed about the world. You changed. What else are you blind to right now?"],
-              ["The 50/50 Paradox","\"We don\u2019t make the right answers, we make our answers right.\" Rate the day AND your effort. They\u2019re never the same number. The gap is the data."],
-              ["REFUZE OS","Reset \u00b7 Equip \u00b7 Forward \u00b7 Unique \u00b7 monetiZe Value \u00b7 Empower. This is the operating system."],
-              ["A-A-A","Awareness \u2192 Alignment \u2192 Activation. In that order. Every time. You don\u2019t hype yourself into change \u2014 you notice, align, then act."],
+              ["The 50/50 Paradox","\"We don’t make the right answers, we make our answers right.\" Rate the day AND your effort. They’re never the same number. The gap is the data."],
+              ["REFUZE OS","Reset · Equip · Forward · Unique · monetiZe Value · Empower. This is the operating system."],
+              ["A-A-A","Awareness → Alignment → Activation. In that order. Every time. You don’t hype yourself into change — you notice, align, then act."],
             ].map(([t,b])=>(
               <div key={t} className="px-4 py-3" style={{borderTop:`1px solid ${LINE}`,background:"#fff"}}>
                 <div style={{color:NAVY,fontWeight:800,fontSize:12,marginBottom:3}}>{t}</div>
@@ -1234,7 +1234,7 @@ export default function JourneyJournal(){
 
       <div className="max-w-xl mx-auto px-4 mt-10 text-center">
         <div style={{...stripes,height:8,opacity:.45}}/>
-        <div style={{fontSize:9.5,color:GRAY,marginTop:6,letterSpacing:".12em"}}>REFUZE \u00b7 YNOT.LIFE \u00b7 THE 1 MONTH JOURNEY v3</div>
+        <div style={{fontSize:9.5,color:GRAY,marginTop:6,letterSpacing:".12em"}}>REFUZE · YNOT.LIFE · THE 1 MONTH JOURNEY v3</div>
       </div>
       <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}`}</style>
     </div>
