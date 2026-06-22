@@ -180,12 +180,13 @@ async function sset(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e)
 
 async function callCoach(content){
   try{
-    const r=await fetch("https://api.anthropic.com/v1/messages",{
+    const r=await fetch("/api/coach",{
       method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:1000,system:DOCTRINE_PROMPT,messages:[{role:"user",content}]})
+      body:JSON.stringify({content,system:DOCTRINE_PROMPT})
     });
     const d=await r.json();
-    return d.content?.[0]?.text||"The coach is offline. Write it yourself \u2014 you already know.";
+    if(!r.ok) return d.error||"The coach is offline. Write it yourself \u2014 you already know.";
+    return d.text||"The coach is offline. Write it yourself \u2014 you already know.";
   }catch{return"Connection failed. What\u2019s the one thing you\u2019d write right now if this worked?";}
 }
 
