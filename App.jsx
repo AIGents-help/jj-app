@@ -183,6 +183,7 @@ const blankOutcome=()=>({title:"",why:"",tasks:""});
 const todayKey=()=>{const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;};
 const dateKeyOff=(n)=>{const d=new Date();d.setDate(d.getDate()+n);return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;};
 const daysBetween=(a,b)=>Math.floor((new Date(b)-new Date(a))/86400000);
+const shiftDate=(key,n)=>{const[y,m,d]=key.split("-").map(Number);const dt=new Date(y,m-1,d+n);return`${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,"0")}-${String(dt.getDate()).padStart(2,"0")}`;};
 
 async function sget(k){try{const v=localStorage.getItem(k);return v?JSON.parse(v):null;}catch{return null;}}
 async function sset(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){console.error(e);}}
@@ -573,21 +574,26 @@ export default function JourneyJournal(){
   const[askQ,setAskQ]=useState("");const[askA,setAskA]=useState("");const[askL,setAskL]=useState(false);
 
   const saveTimer=useRef(null);
-  const dateKey=todayKey();
-  const dayN=meta?Math.min(31,Math.max(1,daysBetween(meta.start,dateKey)+1)):1;
+  const didMountRef=useRef(false);
+  const touchStartX=useRef(null);
+  const[activeDate,setActiveDate]=useState(todayKey());
+  const todayDayN=meta?Math.min(31,Math.max(1,daysBetween(meta.start,todayKey())+1)):1;
+  const dayN=meta?Math.min(31,Math.max(1,daysBetween(meta.start,activeDate)+1)):1;
   const words=DW[(dayN-1)%31];
   const mq=MQ[(dayN-1)%31];const eq=EQ[(dayN-1)%31];
+  const isFuture=activeDate>todayKey();
+  const activeDateLabel=(()=>{const[y,m,d]=activeDate.split("-").map(Number);const dt=new Date(y,m-1,d);return["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][dt.getDay()]+" "+["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][dt.getMonth()]+" "+d;})();
 
   const todosDone=entry.todos.every(t=>t.done);
   const hundredPct=entry.morningRoutine&&entry.eveningRoutine&&entry.scheduledTomorrow&&todosDone&&entry.gratitude.trim()!=="";
-  const streak=(()=>{let s=0;for(let d=dayN-1;d>=1;d--){if(monthMap[d]?.complete)s++;else break;}return s;})();
+  const streak=(()=>{let s=0;for(let d=todayDayN-1;d>=1;d--){if(monthMap[d]?.complete)s++;else break;}return s;})();
 
   useEffect(()=>{
     (async()=>{
       let m=await sget("journey:meta");
-      if(!m){m={start:dateKey};await sset("journey:meta",m);}
+      if(!m){m={start:todayKey()};await sset("journey:meta",m);}
       setMeta(m);
-      let e=await sget(`journey:entry:${dateKey}`);
+      let e=await sget(`journey:entry:${todayKey()}`);
       if(e){
         setEntry({...blankEntry(),...e});
       } else {
@@ -605,24 +611,48 @@ export default function JourneyJournal(){
     })();
   },[]);
 
+  useEffect(()=>{
+    if(!didMountRef.current){didMountRef.current=true;return;}
+    (async()=>{
+      if(saveTimer.current)clearTimeout(saveTimer.current);
+      setPreplanned(false);
+      const e=await sget(`journey:entry:`);
+      if(e){setEntry({...blankEntry(),...e});}
+      else if(activeDate===todayKey()){
+        const yEntry=await sget(`journey:entry:`);
+        if(yEntry?.tomorrowTodos?.some(t=>t.text)){
+          setEntry(prev=>({...prev,todos:yEntry.tomorrowTodos.map(t=>({...t,done:false}))}));
+          setPreplanned(true);
+        } else setEntry(blankEntry());
+      } else setEntry(blankEntry());
+    })();
+  },[activeDate]);
+
   const scheduleSave=useCallback((nextEntry,nextOutcomes)=>{
     setSaved(false);
     if(saveTimer.current)clearTimeout(saveTimer.current);
     saveTimer.current=setTimeout(async()=>{
       const e=nextEntry||entry;
-      await sset(`journey:entry:${dateKey}`,e);
+      await sset(`journey:entry:${activeDate}`,e);
       if(nextOutcomes)await sset("journey:outcomes",nextOutcomes);
       const complete=e.morningRoutine&&e.eveningRoutine&&e.scheduledTomorrow&&e.todos.every(t=>t.done)&&e.gratitude.trim()!=="";
       const mm={...monthMap,[dayN]:{rate:e.dayRate||e.morningRate,effortRate:e.effortRate,
         dayWord:e.dayWordObj?.word,dayScore:e.dayWordObj?.score,complete}};
       setMonthMap(mm);await sset("journey:month",mm);setSaved(true);
     },700);
-  },[entry,dateKey,dayN,monthMap]);
+  },[entry,activeDate,dayN,monthMap]);
 
   const up=(patch)=>{const next={...entry,...patch};setEntry(next);scheduleSave(next);};
   const upTodo=(i,patch)=>{const todos=entry.todos.map((t,j)=>j===i?{...t,...patch}:t);up({todos});};
   const upTTodo=(i,patch)=>{const tomorrowTodos=entry.tomorrowTodos.map((t,j)=>j===i?{...t,...patch}:t);up({tomorrowTodos,scheduledTomorrow:tomorrowTodos.some(t=>t.text)});};
   const upO=(next)=>{setOutcomes(next);scheduleSave(null,next);};
+  const handleTouchStart=useCallback(e=>{touchStartX.current=e.touches[0].clientX;},[]);
+  const handleTouchEnd=useCallback(e=>{
+    if(touchStartX.current===null)return;
+    const dx=e.changedTouches[0].clientX-touchStartX.current;
+    if(Math.abs(dx)>60)setActiveDate(shiftDate(activeDate,dx<0?1:-1));
+    touchStartX.current=null;
+  },[activeDate]);
 
   // AI
   const primeMorning=async()=>{
@@ -703,6 +733,7 @@ export default function JourneyJournal(){
           <span style={{background:RED,color:"#fff",fontWeight:800,fontSize:11,padding:"3px 10px",letterSpacing:".08em"}}>DAY {dayN}/31</span>
           {streak>0&&<span style={{background:"#1A2D4A",color:AMBER,fontSize:10,fontWeight:700,padding:"3px 8px"}}>{streak} DAY STREAK</span>}
           {preplanned&&phase==="morning"&&<span style={{background:"#1A3020",color:"#6ACA8A",fontSize:10,fontWeight:700,padding:"3px 8px"}}>✓ TONIGHT\u2019S PLAN LOADED</span>}
+          {isFuture&&<span style={{background:"#2A3B1A",color:AMBER,fontSize:10,fontWeight:700,padding:"3px 8px"}}>Planning ahead — {activeDateLabel}</span>}
         </div>
         <div style={{position:"absolute",right:10,top:10,fontSize:9.5,color:saved?"#4A6080":AMBER}}>{saved?"saved":"\u25cf saving"}</div>
       </header>
@@ -723,7 +754,17 @@ export default function JourneyJournal(){
 
       {/* ═══ TODAY ═══ */}
       {tab==="today"&&(
-        <main className="max-w-xl mx-auto px-4 pt-5">
+        <main className="max-w-xl mx-auto px-4 pt-5"
+          onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+          <div className="flex items-center justify-between mb-3">
+            <button onClick={()=>setActiveDate(shiftDate(activeDate,-1))}
+              style={{fontSize:22,color:NAVY,background:"none",border:"none",cursor:"pointer",padding:"4px 12px",lineHeight:1}}>&#8249;</button>
+            <div style={{textAlign:"center"}}>
+              <div style={{fontSize:12,fontWeight:800,color:NAVY,letterSpacing:".06em",textTransform:"uppercase"}}>{activeDateLabel}</div>
+            </div>
+            <button onClick={()=>setActiveDate(shiftDate(activeDate,1))}
+              style={{fontSize:22,color:NAVY,background:"none",border:"none",cursor:"pointer",padding:"4px 12px",lineHeight:1}}>&#8250;</button>
+          </div>
           <div className="flex gap-2 mb-4">
             {[["morning","\u2600 Morning"],["evening","\u263E Evening"]].map(([k,t])=>(
               <button key={k} onClick={()=>setPhase(k)} className="flex-1 py-2"
@@ -1069,15 +1110,16 @@ export default function JourneyJournal(){
           <Banner sub="30 checks in a row. Imagine how much closer.">The Month</Banner>
           <div className="grid grid-cols-7 gap-1.5 mb-5">
             {Array.from({length:31},(_,i)=>i+1).map(d=>{
-              const rec=monthMap[d];const isToday=d===dayN;
+              const rec=monthMap[d];const isToday=d===todayDayN;const isActive=d===dayN&&!isToday;
               const gap=rec?.effortRate>0&&rec?.rate>0?rec.effortRate-rec.rate:0;
               return(
-                <div key={d} className="flex flex-col items-center justify-center"
-                  style={{aspectRatio:"1",borderRadius:2,
-                    border:isToday?`2px solid ${RED}`:`1px solid ${LINE}`,
+                <div key={d} onClick={()=>{setActiveDate(dateKeyOff(d-todayDayN));setTab("today");}}
+                  className="flex flex-col items-center justify-center"
+                  style={{aspectRatio:"1",borderRadius:2,cursor:"pointer",
+                    border:isToday?`2px solid ${RED}`:isActive?`2px solid ${AMBER}`:`1px solid ${LINE}`,
                     background:rec?.complete?NAVY:rec?.rate?"#EEF2F8":"#fff"}}>
                   <div style={{fontSize:8.5,color:rec?.complete?PAPER:GRAY,fontWeight:700}}>{d}</div>
-                  <div style={{fontSize:13,fontWeight:900,color:rec?.complete?PAPER:isToday?RED:GRAY}}>
+                  <div style={{fontSize:13,fontWeight:900,color:rec?.complete?PAPER:isToday?RED:isActive?AMBER:GRAY}}>
                     {rec?.complete?"\u2713":rec?.rate?rec.rate:"\u00b7"}
                   </div>
                   {gap>=2&&<div style={{fontSize:6.5,color:AMBER,fontWeight:800}}>E+</div>}
@@ -1124,7 +1166,7 @@ export default function JourneyJournal(){
                 fontSize:12,letterSpacing:".1em",border:"none",borderRadius:2,cursor:"pointer"}}>
               ✦ VIEW MONTHLY RECAP \u2014 INSTAGRAM READY ✦
             </button>
-            <button onClick={async()=>{const m={start:dateKey};setMeta(m);setMonthMap({});await sset("journey:meta",m);await sset("journey:month",{});}}
+            <button onClick={async()=>{const m={start:todayKey()};setMeta(m);setMonthMap({});await sset("journey:meta",m);await sset("journey:month",{});}}
               style={{border:`2px solid ${NAVY}`,color:NAVY,fontWeight:800,fontSize:11,letterSpacing:".08em",padding:"8px 18px",background:"transparent",cursor:"pointer"}}>
               START NEW MONTH \u2192
             </button>
