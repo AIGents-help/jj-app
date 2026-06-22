@@ -827,7 +827,7 @@ export default function JourneyJournal(){
                   </span>
                 </button>
                 {!(entry.nameItCollapsed??true)&&(
-                    <div style={{borderTop:1px solid }}>
+                    <div style={{borderTop:`1px solid ${LINE}`}}>
                       <WordPicker words={words} selected={entry.morningWordObj} onSelect={v=>up({morningWordObj:v})}/>
                       {entry.morningWordObj&&<div style={{fontSize:10.5,color:GRAY,padding:"4px 12px"}}>Score: {entry.morningWordObj.score}/10</div>}
                     </div>
@@ -873,6 +873,7 @@ export default function JourneyJournal(){
                       </div>
                     </div>
                   ))}
+                </div>
 
               {/* Secondary Activities */}
               <div>
@@ -895,7 +896,7 @@ export default function JourneyJournal(){
                         <button onClick={()=>{
                           const secondaryActivities=(entry.secondaryActivities??[]).filter((_,j)=>j!==i);
                           up({secondaryActivities});
-                        }} style={{flexShrink:0,width:24,height:24,border:1px solid ,borderRadius:2,
+                        }} style={{flexShrink:0,width:24,height:24,border:`1px solid ${LINE}`,borderRadius:2,
                           background:"#fff",color:GRAY,cursor:"pointer",fontSize:16,lineHeight:1}}>×</button>
                       </div>
                     ))}
@@ -919,6 +920,7 @@ export default function JourneyJournal(){
                     </div>
                   ))}
                 </div>
+              </div>
               </div>
             </div>
           )}
