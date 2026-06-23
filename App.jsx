@@ -1,6 +1,7 @@
 ﻿import { useState, useEffect, useRef, useCallback } from "react";
 import OutcomeLetter from "./components/OutcomeLetter.jsx";
 import YourLanguage from "./components/YourLanguage.jsx";
+import RevealCard from "./components/RevealCard.jsx";
 import { languageSummaryForCoach } from "./lib/languageSignals.js";
 
 /* ═══════════════════════════════════════════════════════════════════
@@ -781,6 +782,8 @@ export default function JourneyJournal(){
               </button>
             ))}
           </div>
+
+          <RevealCard />
 
           {phase==="morning"&&(
             <div className="space-y-5">
