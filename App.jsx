@@ -1,4 +1,7 @@
 ﻿import { useState, useEffect, useRef, useCallback } from "react";
+import OutcomeLetter from "./components/OutcomeLetter.jsx";
+import YourLanguage from "./components/YourLanguage.jsx";
+import { languageSummaryForCoach } from "./lib/languageSignals.js";
 
 /* ═══════════════════════════════════════════════════════════════════
    THE 1 MONTH JOURNEY — v3 AI Edition
@@ -659,10 +662,12 @@ export default function JourneyJournal(){
     setPrimerL(true);
     const yEntry=await sget(`journey:entry:${dateKeyOff(-1)}`)||{};
     const outList=outcomes.required.map((o,i)=>`${i+1}. ${o.title||"(not set)"}`).join("\n");
+    const langSignal=languageSummaryForCoach();
     const res=await callCoach(
       `Day ${dayN} of 31. My 3 month outcomes:\n${outList}\n\n`+
       (yEntry.corrections?`Yesterday’s corrections: ${yEntry.corrections}\n`:"")+
       (yEntry.jeepEffect?`What I noticed yesterday: ${yEntry.jeepEffect}\n`:"")+
+      (langSignal?`\n${langSignal}\n`:"")+
       `\nPrime my awareness lens for today.`
     );
     setPrimer(res);setPrimerL(false);
@@ -670,6 +675,7 @@ export default function JourneyJournal(){
 
   const getInsight=async()=>{
     setInsightL(true);
+    const langSignal=languageSummaryForCoach();
     const res=await callCoach(
       `Day ${dayN} of 31.\nDay rating: ${entry.dayRate}/10 | Effort rating: ${entry.effortRate}/10\n`+
       `Today’s word: ${entry.dayWordObj?.word||"(none)"} (score ${entry.dayWordObj?.score||0}/10)\n`+
@@ -678,6 +684,7 @@ export default function JourneyJournal(){
       `Ah Hah: ${entry.ahHah||"(none)"}\n`+
       `Jeep Effect — what I noticed: ${entry.jeepEffect||"(none)"}\n`+
       `Tomorrow’s 3 To-Do’s planned: ${entry.tomorrowTodos.map(t=>t.text||"(empty)").join(" / ")}\n`+
+      (langSignal?`\n${langSignal}\n`:"")+
       `\nGive me my evening coaching. Apply the 50/50 Paradox to my ratings. Call out the pattern if it’s there.`
     );
     setInsight(res);setInsightL(false);
@@ -741,7 +748,7 @@ export default function JourneyJournal(){
 
       {/* Nav */}
       <nav className="flex" style={{borderBottom:`2px solid ${NAVY}`}}>
-        {[["today","Today"],["outcomes","Outcomes"],["month","Month"],["coach","Coach ●"]].map(([k,t])=>(
+        {[["today","Today"],["outcomes","Outcomes"],["month","Month"],["letter","Letter"],["language","Language"],["coach","Coach ●"]].map(([k,t])=>(
           <button key={k} onClick={()=>setTab(k)} className="flex-1 py-2.5"
             style={{fontSize:11.5,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",
               color:k==="coach"?(tab===k?"#fff":AMBER):(tab===k?PAPER:NAVY),
@@ -1105,6 +1112,12 @@ export default function JourneyJournal(){
           )}
         </main>
       )}
+
+      {/* ═══ LETTER ═══ */}
+      {tab==="letter"&&<OutcomeLetter/>}
+
+      {/* ═══ LANGUAGE ═══ */}
+      {tab==="language"&&<YourLanguage/>}
 
       {/* ═══ MONTH ═══ */}
       {tab==="month"&&(
