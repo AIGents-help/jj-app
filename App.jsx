@@ -2,11 +2,12 @@
 import OutcomeLetter from "./components/OutcomeLetter.jsx";
 import YourLanguage from "./components/YourLanguage.jsx";
 import RevealCard from "./components/RevealCard.jsx";
+import MonthReveal from "./components/MonthReveal.jsx";
 import { languageSummaryForCoach } from "./lib/languageSignals.js";
 import { computeDayActivation, activationStyle, activationPercent, STATE } from "./lib/activation.js";
 
 /* ═══════════════════════════════════════════════════════════════════
-   THE 1 MONTH JOURNEY — v3 AI Edition
+   REVEAL — The Awareness Journal — v3 AI Edition
    Kates Doctrine · All Tony Kates Quotes · Voice Input · Word Picker
    Daily Photo · Pre-Planned Morning Todos · Pattern Coach
    ═══════════════════════════════════════════════════════════════════ */
@@ -17,7 +18,7 @@ const RED="#C8281C",GRAY="#7A8190",COAL="#0D1520",AMBER="#C8830A";
 const stripes={backgroundImage:`repeating-linear-gradient(90deg,${NAVY} 0 9px,#8FA0BC 9px 12px,${PAPER} 12px 20px)`};
 
 /* ── Doctrine Prompt ─────────────────────────────────────────────── */
-const DOCTRINE_PROMPT=`You are the Awareness Coach — the AI layer of The 1 Month Journey, built on the Kates Doctrine by Tony Kates (REFUZE / YNOT.LIFE).
+const DOCTRINE_PROMPT=`You are the Awareness Coach — the AI layer of Reveal — The Awareness Journal, built on the Kates Doctrine by Tony Kates (REFUZE / YNOT.LIFE).
 
 DOCTRINE:
 • Law of Awareness: Affirmations condition awareness — NOT the universe. "Potential is ubiquitous." "Reality doesn't deliver. Reality reveals." You didn't attract it. You conditioned yourself to see it. The Jeep Effect: see one Jeep, see Jeeps everywhere. The opportunity was always there.
@@ -485,7 +486,7 @@ function MonthlyRecap({dayN,onClose}){
         <div style={{background:NAVY,padding:"16px 20px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
           <div>
             <div style={{color:"#8FA0BC",fontSize:9.5,letterSpacing:".2em"}}>REFUZE · YNOT.LIFE</div>
-            <div style={{color:PAPER,fontFamily:"Georgia,serif",fontWeight:800,fontSize:18}}>1 Month Journey</div>
+            <div style={{color:PAPER,fontFamily:"Georgia,serif",fontWeight:800,fontSize:18}}>Reveal</div>
             <div style={{color:AMBER,fontSize:11,fontWeight:700,marginTop:2}}>Monthly Recap</div>
           </div>
           <button onClick={onClose} style={{color:"#8FA0BC",background:"none",border:"none",fontSize:22,cursor:"pointer"}}>✕</button>
@@ -548,7 +549,7 @@ function MonthlyRecap({dayN,onClose}){
               })()}
             </div>
             <div style={{textAlign:"center",marginTop:14,color:GRAY,fontSize:10,letterSpacing:".06em"}}>
-              Screenshot and share #YNOTLife #1MonthJourney
+              Screenshot and share #YNOTLife #RevealJournal
             </div>
           </div>
         )}
@@ -571,6 +572,7 @@ export default function JourneyJournal(){
   const[monthMap,setMonthMap]=useState({});
   const[activationMap,setActivationMap]=useState({});
   const[showRecap,setShowRecap]=useState(false);
+  const[showReveal,setShowReveal]=useState(false);
   const[preplanned,setPreplanned]=useState(false);
 
   // AI state
@@ -733,22 +735,24 @@ export default function JourneyJournal(){
 
   if(loading)return(
     <div className="min-h-screen flex items-center justify-center" style={{background:COAL}}>
-      <div style={{color:AMBER,fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:16}}>Opening your Journey…</div>
+      <div style={{color:AMBER,fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:16}}>Opening Reveal…</div>
     </div>
   );
 
   return(
     <div className="min-h-screen pb-24" style={{background:PAPER,fontFamily:'-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif'}}>
       {showRecap&&<MonthlyRecap dayN={dayN} onClose={()=>setShowRecap(false)}/>}
+      {showReveal&&<MonthReveal dayN={dayN} monthMap={monthMap} outcomes={outcomes}
+        onClose={()=>setShowReveal(false)}
+        onComplete={(newMeta,newOutcomes)=>{setMeta(newMeta);setMonthMap({});setOutcomes(newOutcomes);setActiveDate(todayKey());setShowReveal(false);}}/>}
 
       {/* Masthead */}
       <header style={{background:NAVY}} className="px-4 pt-5 pb-4 text-center relative">
         <div style={{color:"#8FA0BC",letterSpacing:".3em",fontSize:9.5}}>R · E · F · U · Z · E</div>
-        <h1 style={{color:PAPER,fontFamily:"Georgia,serif",fontWeight:800,fontSize:22,lineHeight:1.15,marginTop:3}}>
-          The 1 Month{" "}
-          <span style={{textDecoration:"line-through",textDecorationColor:RED,textDecorationThickness:3}}>Journal</span>
-          <span style={{color:RED,fontFamily:"Georgia,serif",fontStyle:"italic"}}>ey</span>
+        <h1 style={{color:PAPER,fontFamily:"Georgia,serif",fontWeight:800,fontSize:26,lineHeight:1.1,marginTop:3,letterSpacing:".04em"}}>
+          REVE<span style={{color:AMBER}}>A</span>L
         </h1>
+        <div style={{color:"#8FA0BC",fontSize:9.5,letterSpacing:".22em",marginTop:3}}>THE AWARENESS JOURNAL</div>
         <div className="flex items-center justify-center flex-wrap gap-2 mt-2">
           <span style={{background:RED,color:"#fff",fontWeight:800,fontSize:11,padding:"3px 10px",letterSpacing:".08em"}}>DAY {dayN}/31</span>
           {streak>0&&<span style={{background:"#1A2D4A",color:AMBER,fontSize:10,fontWeight:700,padding:"3px 8px"}}>{streak} DAY STREAK</span>}
@@ -1203,9 +1207,9 @@ export default function JourneyJournal(){
                 fontSize:12,letterSpacing:".1em",border:"none",borderRadius:2,cursor:"pointer"}}>
               ✦ VIEW MONTHLY RECAP — INSTAGRAM READY ✦
             </button>
-            <button onClick={async()=>{const m={start:todayKey()};setMeta(m);setMonthMap({});await sset("journey:meta",m);await sset("journey:month",{});}}
+            <button onClick={()=>setShowReveal(true)}
               style={{border:`2px solid ${NAVY}`,color:NAVY,fontWeight:800,fontSize:11,letterSpacing:".08em",padding:"8px 18px",background:"transparent",cursor:"pointer"}}>
-              START NEW MONTH →
+              COMPLETE THE MONTH →
             </button>
             <div style={{fontFamily:"Georgia,serif",fontStyle:"italic",color:NAVY2,fontSize:13}}>
               {"“"}Everyday is Day 1.{"”"} — Tony Kates
@@ -1271,7 +1275,7 @@ export default function JourneyJournal(){
 
       <div className="max-w-xl mx-auto px-4 mt-10 text-center">
         <div style={{...stripes,height:8,opacity:.45}}/>
-        <div style={{fontSize:9.5,color:GRAY,marginTop:6,letterSpacing:".12em"}}>REFUZE · YNOT.LIFE · THE 1 MONTH JOURNEY v3</div>
+        <div style={{fontSize:9.5,color:GRAY,marginTop:6,letterSpacing:".12em"}}>REFUZE · YNOT.LIFE · REVEAL v3</div>
       </div>
       <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}`}</style>
     </div>
