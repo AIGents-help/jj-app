@@ -3,3 +3,14 @@
 @tailwind utilities;
 
 html, body { margin: 0; padding: 0; }
+
+:root {
+  --color-background-success:  #2A5C40;
+  --color-text-success:        #fff;
+  --color-background-warning:  #FDF3DC;
+  --color-text-warning:        #7A4500;
+  --color-background-danger:   #FAE8E8;
+  --color-text-danger:         #C8281C;
+  --color-background-tertiary: #F0F2F5;
+  --color-text-tertiary:       #7A8190;
+}

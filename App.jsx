@@ -3,6 +3,7 @@ import OutcomeLetter from "./components/OutcomeLetter.jsx";
 import YourLanguage from "./components/YourLanguage.jsx";
 import RevealCard from "./components/RevealCard.jsx";
 import { languageSummaryForCoach } from "./lib/languageSignals.js";
+import { computeDayActivation, activationStyle, activationPercent, STATE } from "./lib/activation.js";
 
 /* ═══════════════════════════════════════════════════════════════════
    THE 1 MONTH JOURNEY — v3 AI Edition
@@ -568,6 +569,7 @@ export default function JourneyJournal(){
   const[entry,setEntry]=useState(blankEntry());
   const[outcomes,setOutcomes]=useState({required:[blankOutcome(),blankOutcome(),blankOutcome()],letter:"",mode:"main",needs:{}});
   const[monthMap,setMonthMap]=useState({});
+  const[activationMap,setActivationMap]=useState({});
   const[showRecap,setShowRecap]=useState(false);
   const[preplanned,setPreplanned]=useState(false);
 
@@ -611,6 +613,14 @@ export default function JourneyJournal(){
       const o=await sget("journey:outcomes");
       if(o)setOutcomes({mode:"main",needs:{},...o});
       const mm=await sget("journey:month");if(mm)setMonthMap(mm);
+      const amap={};
+      for(let di=1;di<=31;di++){
+        const dk=shiftDate(m.start,di-1);
+        const isFut=dk>todayKey();
+        const rawE=isFut?null:await sget(`journey:entry:${dk}`);
+        amap[di]=computeDayActivation(rawE,{isFuture:isFut});
+      }
+      setActivationMap(amap);
       setLoading(false);
     })();
   },[]);
@@ -642,7 +652,9 @@ export default function JourneyJournal(){
       const complete=e.morningRoutine&&e.eveningRoutine&&e.scheduledTomorrow&&e.todos.every(t=>t.done)&&e.gratitude.trim()!=="";
       const mm={...monthMap,[dayN]:{rate:e.dayRate||e.morningRate,effortRate:e.effortRate,
         dayWord:e.dayWordObj?.word,dayScore:e.dayWordObj?.score,complete}};
-      setMonthMap(mm);await sset("journey:month",mm);setSaved(true);
+      setMonthMap(mm);await sset("journey:month",mm);
+      setActivationMap(prev=>({...prev,[dayN]:computeDayActivation(e,{isFuture:false})}));
+      setSaved(true);
     },700);
   },[entry,activeDate,dayN,monthMap]);
 
@@ -1130,15 +1142,22 @@ export default function JourneyJournal(){
             {Array.from({length:31},(_,i)=>i+1).map(d=>{
               const rec=monthMap[d];const isToday=d===todayDayN;const isActive=d===dayN&&!isToday;
               const gap=rec?.effortRate>0&&rec?.rate>0?rec.effortRate-rec.rate:0;
+              const act=activationMap[d];
+              const actSty=act?activationStyle(act):null;
+              const actPct=act?activationPercent(act):null;
+              const isFutDay=act?.state===STATE.FUTURE;
+              const cellBg=actSty?.bg??(rec?.complete?NAVY:rec?.rate?"#EEF2F8":"#fff");
+              const cellFg=actSty?.fg??(rec?.complete?PAPER:isToday?RED:isActive?AMBER:GRAY);
               return(
                 <div key={d} onClick={()=>{setActiveDate(dateKeyOff(d-todayDayN));setTab("today");}}
                   className="flex flex-col items-center justify-center"
                   style={{aspectRatio:"1",borderRadius:2,cursor:"pointer",
                     border:isToday?`2px solid ${RED}`:isActive?`2px solid ${AMBER}`:`1px solid ${LINE}`,
-                    background:rec?.complete?NAVY:rec?.rate?"#EEF2F8":"#fff"}}>
-                  <div style={{fontSize:8.5,color:rec?.complete?PAPER:GRAY,fontWeight:700}}>{d}</div>
-                  <div style={{fontSize:13,fontWeight:900,color:rec?.complete?PAPER:isToday?RED:isActive?AMBER:GRAY}}>
-                    {rec?.complete?"✓":rec?.rate?rec.rate:"·"}
+                    background:cellBg}}>
+                  <div style={{fontSize:8.5,color:cellFg,fontWeight:700}}>{d}</div>
+                  {act?.journaled&&<div style={{width:3,height:3,borderRadius:"50%",background:cellFg,opacity:.5}}/>}
+                  <div style={{fontSize:actPct!=null?9.5:13,fontWeight:900,color:cellFg}}>
+                    {actPct===100?"✓":actPct!=null&&!isFutDay?`${actPct}%`:rec?.complete?"✓":"·"}
                   </div>
                   {gap>=2&&<div style={{fontSize:6.5,color:AMBER,fontWeight:800}}>E+</div>}
                 </div>
