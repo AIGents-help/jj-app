@@ -1,5 +1,5 @@
 // RevealCard.jsx
-// The Reveal surface for The 1 Month Journey.
+// The REVEAL intelligence surface inside Journey Journal.
 //
 // Renders in two layers:
 //   1. Deterministic signals from revealSignals.js — instant, offline, never empty.

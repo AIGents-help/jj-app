@@ -1,7 +1,7 @@
 {
-  "name": "The 1 Month Journey",
-  "short_name": "1MonthJourney",
-  "description": "An Awareness Journal built on the Kates Doctrine. REFUZE / YNOT.LIFE.",
+  "name": "Journey Journal",
+  "short_name": "Journey",
+  "description": "A personal direction system for turning outcomes into daily action, evidence and awareness.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#16243C",

@@ -3,6 +3,7 @@ import OutcomeLetter from "./components/OutcomeLetter.jsx";
 import YourLanguage from "./components/YourLanguage.jsx";
 import RevealCard from "./components/RevealCard.jsx";
 import MonthReveal from "./components/MonthReveal.jsx";
+import JourneyGuide from "./components/JourneyGuide.jsx";
 import { languageSummaryForCoach } from "./lib/languageSignals.js";
 import { computeDayActivation, activationStyle, activationPercent, STATE } from "./lib/activation.js";
 
@@ -18,21 +19,6 @@ const RED="#C8281C",GRAY="#7A8190",COAL="#0D1520",AMBER="#C8830A";
 const stripes={backgroundImage:`repeating-linear-gradient(90deg,${NAVY} 0 9px,#8FA0BC 9px 12px,${PAPER} 12px 20px)`};
 
 /* ── Doctrine Prompt ─────────────────────────────────────────────── */
-const DOCTRINE_PROMPT=`You are the Awareness Coach — the AI layer of Reveal — The Awareness Journal, built on the Kates Doctrine by Tony Kates (REFUZE / YNOT.LIFE).
-
-DOCTRINE:
-• Law of Awareness: Affirmations condition awareness — NOT the universe. "Potential is ubiquitous." "Reality doesn't deliver. Reality reveals." You didn't attract it. You conditioned yourself to see it. The Jeep Effect: see one Jeep, see Jeeps everywhere. The opportunity was always there.
-• 50/50 Paradox: "We don't make the right answers, we make our answers right." Rate the day AND rate the effort — they tell two different stories. A 10-effort day with a 5 outcome is still a win.
-• REFUZE OS: Reset · Equip · Forward · Unique · monetiZe Value · Empower.
-• L.I.F.E.: Little Incidents Finding Expression. Events are neutral until awareness assigns meaning.
-• A-A-A: Awareness → Alignment → Activation. In that order. Every time.
-
-VOICE — non-negotiable:
-Direct. Street level. No self-help filler. Max 160 words total. Questions are weapons.
-Never say: "manifest", "the universe will provide", "great job", "I can see that..."
-End EVERY response with ONE surgical closing question on its own line.
-FORMAT: 2–3 tight paragraphs + one closing question.`;
-
 /* ── Tony Kates Morning Quotes (31) ─────────────────────────────── */
 // Format: [text, attr] OR [before, "REFUZE_word", after, attr]
 const MQ=[
@@ -168,7 +154,7 @@ const NEEDS_TAXONOMY=[
 ];
 
 /* ── Schema ──────────────────────────────────────────────────────── */
-const blankTodo=()=>({text:"",done:false});
+const blankTodo=()=>({text:"",done:false,outcomeIndex:"",resources:"",evidence:"",explanation:""});
 const blankEntry=()=>({
   wakingThoughts:"",morningWordObj:null,morningRate:0,morningRoutine:false,
   wakeTime:"",deepSleepPct:null,sleepSource:"manual",
@@ -183,7 +169,7 @@ const blankEntry=()=>({
   tomorrowTodos:[blankTodo(),blankTodo(),blankTodo()],
   scheduledTomorrow:false,
 });
-const blankOutcome=()=>({title:"",why:"",tasks:""});
+const blankOutcome=()=>({title:"",why:"",tasks:"",resourcesHave:"",resourcesNeed:"",people:""});
 
 /* ── Utilities ───────────────────────────────────────────────────── */
 const todayKey=()=>{const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;};
@@ -198,7 +184,7 @@ async function callCoach(content){
   try{
     const r=await fetch("/api/coach",{
       method:"POST",headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({content,system:DOCTRINE_PROMPT})
+      body:JSON.stringify({content})
     });
     const d=await r.json();
     if(!r.ok) return d.error||"The coach is offline. Write it yourself — you already know.";
@@ -462,14 +448,14 @@ function PhotoCapture({photo,onChange}){
   );
 }
 
-/* ── Monthly Recap ───────────────────────────────────────────────── */
-function MonthlyRecap({dayN,onClose}){
+/* ── Journey Recap ───────────────────────────────────────────────── */
+function MonthlyRecap({dayN,duration=30,onClose}){
   const[data,setData]=useState({});
   const[loading,setLoading]=useState(true);
   useEffect(()=>{
     (async()=>{
       const result={};
-      for(let d=1;d<=31;d++){
+      for(let d=1;d<=duration;d++){
         const offset=d-dayN;
         const k=dateKeyOff(offset);
         const e=await sget(`journey:entry:${k}`);
@@ -487,7 +473,7 @@ function MonthlyRecap({dayN,onClose}){
           <div>
             <div style={{color:"#8FA0BC",fontSize:9.5,letterSpacing:".2em"}}>REFUZE · YNOT.LIFE</div>
             <div style={{color:PAPER,fontFamily:"Georgia,serif",fontWeight:800,fontSize:18}}>Reveal</div>
-            <div style={{color:AMBER,fontSize:11,fontWeight:700,marginTop:2}}>Monthly Recap</div>
+            <div style={{color:AMBER,fontSize:11,fontWeight:700,marginTop:2}}>Journey Recap</div>
           </div>
           <button onClick={onClose} style={{color:"#8FA0BC",background:"none",border:"none",fontSize:22,cursor:"pointer"}}>✕</button>
         </div>
@@ -500,7 +486,7 @@ function MonthlyRecap({dayN,onClose}){
               {["S","M","T","W","T","F","S"].map((d,i)=>(
                 <div key={i} style={{textAlign:"center",fontSize:9,fontWeight:800,color:GRAY,paddingBottom:4}}>{d}</div>
               ))}
-              {Array.from({length:31},(_,i)=>i+1).map(d=>{
+              {Array.from({length:duration},(_,i)=>i+1).map(d=>{
                 const rec=data[d];
                 const word=rec?.dayWordObj?.word||rec?.morningWordObj?.word;
                 const score=rec?.dayWordObj?.score||rec?.morningWordObj?.score||0;
@@ -526,7 +512,7 @@ function MonthlyRecap({dayN,onClose}){
             <div style={{background:COAL,borderRadius:3,padding:"12px 16px"}}>
               <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em",marginBottom:8}}>LANGUAGE TREND</div>
               <div style={{display:"flex",flexWrap:"wrap",gap:4}}>
-                {Array.from({length:31},(_,i)=>i+1).map(d=>{
+                {Array.from({length:duration},(_,i)=>i+1).map(d=>{
                   const rec=data[d];const score=rec?.dayWordObj?.score||0;
                   if(!score)return null;
                   return(
@@ -549,7 +535,7 @@ function MonthlyRecap({dayN,onClose}){
               })()}
             </div>
             <div style={{textAlign:"center",marginTop:14,color:GRAY,fontSize:10,letterSpacing:".06em"}}>
-              Screenshot and share #YNOTLife #RevealJournal
+              Screenshot and share #YNOTLife #JourneyJournal
             </div>
           </div>
         )}
@@ -585,8 +571,9 @@ export default function JourneyJournal(){
   const didMountRef=useRef(false);
   const touchStartX=useRef(null);
   const[activeDate,setActiveDate]=useState(todayKey());
-  const todayDayN=meta?Math.min(31,Math.max(1,daysBetween(meta.start,todayKey())+1)):1;
-  const dayN=meta?Math.min(31,Math.max(1,daysBetween(meta.start,activeDate)+1)):1;
+  const journeyDays=meta?.duration||30;
+  const todayDayN=meta?Math.min(journeyDays,Math.max(1,daysBetween(meta.start,todayKey())+1)):1;
+  const dayN=meta?Math.min(journeyDays,Math.max(1,daysBetween(meta.start,activeDate)+1)):1;
   const words=DW[(dayN-1)%31];
   const mq=MQ[(dayN-1)%31];const eq=EQ[(dayN-1)%31];
   const isFuture=activeDate>todayKey();
@@ -599,7 +586,8 @@ export default function JourneyJournal(){
   useEffect(()=>{
     (async()=>{
       let m=await sget("journey:meta");
-      if(!m){m={start:todayKey()};await sset("journey:meta",m);}
+      if(!m){m={start:todayKey(),duration:30};await sset("journey:meta",m);}
+      if(!m.duration){m={...m,duration:30};await sset("journey:meta",m);}
       setMeta(m);
       let e=await sget(`journey:entry:${todayKey()}`);
       if(e){
@@ -612,11 +600,15 @@ export default function JourneyJournal(){
           setPreplanned(true);
         }
       }
-      const o=await sget("journey:outcomes");
-      if(o)setOutcomes({mode:"main",needs:{},...o});
+      let o=await sget("journey:outcomes");
+      const legacyLetter=await sget("journey:outcomeLetter");
+      if(o){
+        if(!o.letter&&legacyLetter?.body){o={...o,letter:legacyLetter.body};await sset("journey:outcomes",o);}
+        setOutcomes({mode:"main",needs:{},...o});
+      }
       const mm=await sget("journey:month");if(mm)setMonthMap(mm);
       const amap={};
-      for(let di=1;di<=31;di++){
+      for(let di=1;di<=m.duration;di++){
         const dk=shiftDate(m.start,di-1);
         const isFut=dk>todayKey();
         const rawE=isFut?null:await sget(`journey:entry:${dk}`);
@@ -632,10 +624,10 @@ export default function JourneyJournal(){
     (async()=>{
       if(saveTimer.current)clearTimeout(saveTimer.current);
       setPreplanned(false);
-      const e=await sget(`journey:entry:`);
+      const e=await sget(`journey:entry:${activeDate}`);
       if(e){setEntry({...blankEntry(),...e});}
       else if(activeDate===todayKey()){
-        const yEntry=await sget(`journey:entry:`);
+        const yEntry=await sget(`journey:entry:${shiftDate(activeDate,-1)}`);
         if(yEntry?.tomorrowTodos?.some(t=>t.text)){
           setEntry(prev=>({...prev,todos:yEntry.tomorrowTodos.map(t=>({...t,done:false}))}));
           setPreplanned(true);
@@ -679,7 +671,7 @@ export default function JourneyJournal(){
     const outList=outcomes.required.map((o,i)=>`${i+1}. ${o.title||"(not set)"}`).join("\n");
     const langSignal=languageSummaryForCoach();
     const res=await callCoach(
-      `Day ${dayN} of 31. My 3 month outcomes:\n${outList}\n\n`+
+      `Day ${dayN} of ${journeyDays}. My 3 Journey outcomes:\n${outList}\n\n`+
       (yEntry.corrections?`Yesterday’s corrections: ${yEntry.corrections}\n`:"")+
       (yEntry.jeepEffect?`What I noticed yesterday: ${yEntry.jeepEffect}\n`:"")+
       (langSignal?`\n${langSignal}\n`:"")+
@@ -692,13 +684,14 @@ export default function JourneyJournal(){
     setInsightL(true);
     const langSignal=languageSummaryForCoach();
     const res=await callCoach(
-      `Day ${dayN} of 31.\nDay rating: ${entry.dayRate}/10 | Effort rating: ${entry.effortRate}/10\n`+
+      `Day ${dayN} of ${journeyDays}.\nDay rating: ${entry.dayRate}/10 | Effort rating: ${entry.effortRate}/10\n`+
       `Today’s word: ${entry.dayWordObj?.word||"(none)"} (score ${entry.dayWordObj?.score||0}/10)\n`+
       `Corrections: ${entry.corrections||"(none)"}\n`+
       `Obstacle/Solution: ${entry.obstacleSolution||"(none)"}\n`+
       `Ah Hah: ${entry.ahHah||"(none)"}\n`+
       `Jeep Effect — what I noticed: ${entry.jeepEffect||"(none)"}\n`+
-      `Tomorrow’s 3 To-Do’s planned: ${entry.tomorrowTodos.map(t=>t.text||"(empty)").join(" / ")}\n`+
+      `Objective verification:\n${entry.todos.map((t,i)=>`${i+1}. ${t.text||"(not set)"} | ${t.done?`complete; evidence: ${t.evidence||"not supplied"}`:`not complete; explanation: ${t.explanation||"not supplied"}`}`).join("\n")}\n`+
+      `Tomorrow’s 3 objectives planned: ${entry.tomorrowTodos.map(t=>t.text||"(empty)").join(" / ")}\n`+
       (langSignal?`\n${langSignal}\n`:"")+
       `\nGive me my evening coaching. Apply the 50/50 Paradox to my ratings. Call out the pattern if it’s there.`
     );
@@ -729,32 +722,33 @@ export default function JourneyJournal(){
   const askCoach=async()=>{
     if(!askQ.trim())return;
     setAskL(true);
-    const res=await callCoach(askQ);
+    const context=`Current Journey outcomes:\n${outcomes.required.map((o,i)=>`${i+1}. ${o.title||"not set"}`).join("\n")}\nToday's objectives:\n${entry.todos.map((t,i)=>`${i+1}. ${t.text||"not set"} | ${t.done?"complete":"open"} | resources: ${t.resources||"not named"}`).join("\n")}\nRecent obstacle: ${entry.obstacleSolution||"not recorded"}\n\nQuestion: ${askQ}`;
+    const res=await callCoach(context);
     setAskA(res);setAskL(false);
   };
 
   if(loading)return(
     <div className="min-h-screen flex items-center justify-center" style={{background:COAL}}>
-      <div style={{color:AMBER,fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:16}}>Opening Reveal…</div>
+      <div style={{color:AMBER,fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:16}}>Opening Journey…</div>
     </div>
   );
 
   return(
     <div className="min-h-screen pb-24" style={{background:PAPER,fontFamily:'-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif'}}>
-      {showRecap&&<MonthlyRecap dayN={dayN} onClose={()=>setShowRecap(false)}/>}
-      {showReveal&&<MonthReveal dayN={dayN} monthMap={monthMap} outcomes={outcomes}
+      {showRecap&&<MonthlyRecap dayN={dayN} duration={journeyDays} onClose={()=>setShowRecap(false)}/>}
+      {showReveal&&<MonthReveal dayN={dayN} duration={journeyDays} monthMap={monthMap} outcomes={outcomes}
         onClose={()=>setShowReveal(false)}
-        onComplete={(newMeta,newOutcomes)=>{setMeta(newMeta);setMonthMap({});setOutcomes(newOutcomes);setActiveDate(todayKey());setShowReveal(false);}}/>}
+        onComplete={(newMeta,newOutcomes)=>{setMeta(newMeta);setMonthMap({});setOutcomes(newOutcomes);setEntry(blankEntry());setActiveDate(todayKey());setShowReveal(false);}}/>}
 
-      {/* Masthead */}
+      {/* Journey masthead — REVEAL remains the intelligence layer */}
       <header style={{background:NAVY}} className="px-4 pt-5 pb-4 text-center relative">
         <div style={{color:"#8FA0BC",letterSpacing:".3em",fontSize:9.5}}>R · E · F · U · Z · E</div>
         <h1 style={{color:PAPER,fontFamily:"Georgia,serif",fontWeight:800,fontSize:26,lineHeight:1.1,marginTop:3,letterSpacing:".04em"}}>
-          REVE<span style={{color:AMBER}}>A</span>L
+          JOURNEY <span style={{color:AMBER}}>JOURNAL</span>
         </h1>
-        <div style={{color:"#8FA0BC",fontSize:9.5,letterSpacing:".22em",marginTop:3}}>THE AWARENESS JOURNAL</div>
+        <div style={{color:"#8FA0BC",fontSize:9.5,letterSpacing:".18em",marginTop:3}}>YOUR PERSONAL DIRECTION SYSTEM</div>
         <div className="flex items-center justify-center flex-wrap gap-2 mt-2">
-          <span style={{background:RED,color:"#fff",fontWeight:800,fontSize:11,padding:"3px 10px",letterSpacing:".08em"}}>DAY {dayN}/31</span>
+          <span style={{background:RED,color:"#fff",fontWeight:800,fontSize:11,padding:"3px 10px",letterSpacing:".08em"}}>DAY {dayN}/{journeyDays}</span>
           {streak>0&&<span style={{background:"#1A2D4A",color:AMBER,fontSize:10,fontWeight:700,padding:"3px 8px"}}>{streak} DAY STREAK</span>}
           {preplanned&&phase==="morning"&&<span style={{background:"#1A3020",color:"#6ACA8A",fontSize:10,fontWeight:700,padding:"3px 8px"}}>✓ TONIGHT’S PLAN LOADED</span>}
           {isFuture&&<span style={{background:"#2A3B1A",color:AMBER,fontSize:10,fontWeight:700,padding:"3px 8px"}}>Planning ahead — {activeDateLabel}</span>}
@@ -765,7 +759,7 @@ export default function JourneyJournal(){
 
       {/* Nav */}
       <nav className="flex" style={{borderBottom:`2px solid ${NAVY}`}}>
-        {[["today","Today"],["outcomes","Outcomes"],["month","Month"],["letter","Letter"],["language","Language"],["coach","Coach ●"]].map(([k,t])=>(
+        {[["today","Today"],["outcomes","Journey"],["month","Progress"],["letter","Letter"],["language","Language"],["coach","Guide ●"]].map(([k,t])=>(
           <button key={k} onClick={()=>setTab(k)} className="flex-1 py-2.5"
             style={{fontSize:11.5,fontWeight:800,letterSpacing:".06em",textTransform:"uppercase",
               color:k==="coach"?(tab===k?"#fff":AMBER):(tab===k?PAPER:NAVY),
@@ -799,23 +793,11 @@ export default function JourneyJournal(){
             ))}
           </div>
 
-          <RevealCard />
+          <JourneyGuide phase={phase} entry={entry} outcomes={outcomes} onPatch={up} onTodoPatch={upTodo} onOpenLetter={()=>setTab("letter")}/>
 
           {phase==="morning"&&(
             <div className="space-y-5">
               <Quote runs={mq}/>
-
-              {/* Awareness Primer */}
-              <div style={{borderRadius:3,overflow:"hidden"}}>
-                <div className="flex items-center justify-between px-3 py-2" style={{background:COAL}}>
-                  <div>
-                    <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>AWARENESS PRIMER</div>
-                    <div style={{color:"#5A7090",fontSize:10,marginTop:1}}>AI · Yesterday’s log + your outcomes</div>
-                  </div>
-                  <CoachBtn onClick={primeMorning} loading={primerL} label="PRIME MY AWARENESS"/>
-                </div>
-                {(primerL||primer)&&<AICard text={primer} loading={primerL} label="Morning Primer"/>}
-              </div>
 
               <div>
                 <Label c="Waking Thoughts"/>
@@ -865,6 +847,20 @@ export default function JourneyJournal(){
                 <Rate value={entry.morningRate} onChange={n=>up({morningRate:n})}/>
               </div>
 
+              <RevealCard />
+
+              {/* Awareness follows the unprompted waking-state capture. */}
+              <div style={{borderRadius:3,overflow:"hidden"}}>
+                <div className="flex items-center justify-between px-3 py-2" style={{background:COAL}}>
+                  <div>
+                    <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>AWARENESS PRIMER</div>
+                    <div style={{color:"#5A7090",fontSize:10,marginTop:1}}>AI · Your outcomes + the road behind you</div>
+                  </div>
+                  <CoachBtn onClick={primeMorning} loading={primerL} label="DIRECT MY AWARENESS"/>
+                </div>
+                {(primerL||primer)&&<AICard text={primer} loading={primerL} label="Morning Direction"/>}
+              </div>
+
               <div className="flex items-center justify-between p-3"
                 style={{border:`1.5px solid ${entry.morningRoutine?NAVY:LINE}`,borderRadius:2,background:"#fff"}}>
                 <Check big checked={entry.morningRoutine} label="Morning Routine Complete" onToggle={()=>up({morningRoutine:!entry.morningRoutine})}/>
@@ -885,7 +881,7 @@ export default function JourneyJournal(){
               {/* Pre-planned To-Do's */}
               <div>
                 <div className="flex items-center justify-between mb-1">
-                  <Label c="Top 3 To Do’s"/>
+                  <Label c="Three Daily Objectives"/>
                   {preplanned&&<span style={{fontSize:9.5,color:"#5ABA7A",fontWeight:700}}>✓ Planned last night</span>}
                 </div>
                 <div className="space-y-2">
@@ -893,9 +889,18 @@ export default function JourneyJournal(){
                     <div key={i} className="p-2.5" style={{border:`1px solid ${t.done?LINE:NAVY}`,background:"#fff",borderRadius:2}}>
                       <div className="flex gap-2 items-center">
                         <Check checked={t.done} onToggle={()=>upTodo(i,{done:!t.done})}/>
-                        <VoiceInput value={t.text} placeholder={`To Do ${i+1}`}
+                        <VoiceInput value={t.text} placeholder={`Objective ${i+1}`}
                           onChange={v=>{upTodo(i,{text:v});if(preplanned)setPreplanned(false);}}
                           style={{textDecoration:t.done?"line-through":"none",background:"transparent",border:"none",padding:"4px 40px 4px 0"}}/>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2 mt-2" style={{paddingLeft:28}}>
+                        <select value={t.outcomeIndex??""} onChange={e=>upTodo(i,{outcomeIndex:e.target.value})}
+                          aria-label={`Outcome advanced by objective ${i+1}`}
+                          style={{border:`1px solid ${LINE}`,background:"#fff",color:NAVY,fontSize:11,padding:"7px 8px"}}>
+                          <option value="">Connect to outcome…</option>
+                          {outcomes.required.map((o,j)=><option key={j} value={String(j)} disabled={!o.title}>{o.title?`Outcome ${j+1}: ${o.title}`:`Outcome ${j+1} not set`}</option>)}
+                        </select>
+                        <VoiceInput value={t.resources??""} placeholder="Resources required…" onChange={v=>upTodo(i,{resources:v})}/>
                       </div>
                     </div>
                   ))}
@@ -1023,10 +1028,10 @@ export default function JourneyJournal(){
 
               <div><Label c="Show Gratitude"/><VoiceArea rows={3} value={entry.gratitude} placeholder="What are you thankful for about this day?" onChange={v=>up({gratitude:v})}/></div>
 
-              {/* ── TOMORROW'S 3 TO-DO'S ── Tony's core instruction */}
+              {/* Prepare tomorrow before closing today. */}
               <div style={{border:`2px solid ${NAVY}`,borderRadius:3,overflow:"hidden"}}>
                 <div className="px-3 py-2" style={{background:NAVY}}>
-                  <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>TOMORROW’S 3 TO-DO’S</div>
+                  <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em"}}>TOMORROW’S 3 OBJECTIVES</div>
                   <div style={{color:"#8FA0BC",fontSize:10.5,marginTop:1}}>Plan now. Wake up with purpose. These get you out of bed.</div>
                 </div>
                 <div style={{background:"#fff",padding:12}} className="space-y-2">
@@ -1034,7 +1039,7 @@ export default function JourneyJournal(){
                     <div key={i} style={{display:"flex",gap:8,alignItems:"center"}}>
                       <span style={{fontSize:11,fontWeight:800,color:NAVY,minWidth:16}}>{i+1}.</span>
                       <div style={{flex:1}}>
-                        <VoiceInput value={t.text} placeholder={`To Do ${i+1} for tomorrow…`}
+                        <VoiceInput value={t.text} placeholder={`Objective ${i+1} for tomorrow…`}
                           onChange={v=>upTTodo(i,{text:v})}/>
                       </div>
                     </div>
@@ -1085,6 +1090,14 @@ export default function JourneyJournal(){
       {/* ═══ OUTCOMES ═══ */}
       {tab==="outcomes"&&(
         <main className="max-w-xl mx-auto px-4 pt-5 space-y-5">
+          <div style={{border:`1.5px solid ${NAVY}`,background:"#fff",padding:12}}>
+            <Label c="Journey Length"/>
+            <div className="flex gap-2">
+              {[1,7,30,90].map(days=><button key={days} onClick={()=>{const next={...meta,duration:days};setMeta(next);sset("journey:meta",next);}}
+                style={{flex:1,padding:"8px 4px",border:`1.5px solid ${meta?.duration===days?NAVY:LINE}`,background:meta?.duration===days?NAVY:"#fff",color:meta?.duration===days?PAPER:NAVY,fontWeight:800,fontSize:11,cursor:"pointer"}}>{days} {days===1?"DAY":"DAYS"}</button>)}
+            </div>
+            <div style={{fontSize:10.5,color:GRAY,marginTop:7}}>Choose the smallest timeframe long enough to produce meaningful evidence.</div>
+          </div>
           {/* Mode toggle */}
           <div className="flex" style={{border:`2px solid ${NAVY}`,borderRadius:2,overflow:"hidden"}}>
             {[["main","3 Main Outcomes"],["needs","Needs Driven"]].map(([k,t])=>(
@@ -1098,7 +1111,7 @@ export default function JourneyJournal(){
           </div>
 
           {(outcomes.mode??"main")==="main"&&<>
-          <Banner sub="One month of intentional action.">3 Required Outcomes</Banner>
+          <Banner sub={`${journeyDays} days of intentional action.`}>3 Required Outcomes</Banner>
           {outcomes.required.map((o,i)=>(
             <div key={i} className="p-3 space-y-2" style={{border:`1.5px solid ${NAVY}`,background:"#fff",borderRadius:2}}>
               <div style={{background:NAVY,color:PAPER,fontWeight:800,fontSize:11,padding:"2px 10px",display:"inline-block"}}>OUTCOME {i+1}</div>
@@ -1108,6 +1121,14 @@ export default function JourneyJournal(){
                 onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,tasks:v}:x);upO({...outcomes,required:r});}}/>
               <VoiceArea rows={1} value={o.why} placeholder="Why:"
                 onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,why:v}:x);upO({...outcomes,required:r});}}/>
+              <div className="grid grid-cols-2 gap-2">
+                <VoiceArea rows={2} value={o.resourcesHave??""} placeholder="Resources I have…"
+                  onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,resourcesHave:v}:x);upO({...outcomes,required:r});}}/>
+                <VoiceArea rows={2} value={o.resourcesNeed??""} placeholder="Resources I need…"
+                  onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,resourcesNeed:v}:x);upO({...outcomes,required:r});}}/>
+              </div>
+              <VoiceArea rows={1} value={o.people??""} placeholder="Who can help or is involved?"
+                onChange={v=>{const r=outcomes.required.map((x,j)=>j===i?{...x,people:v}:x);upO({...outcomes,required:r});}}/>
             </div>
           ))}
           <Banner sub="Read this daily as part of your morning ritual.">Outcome Letter</Banner>
@@ -1118,12 +1139,12 @@ export default function JourneyJournal(){
 
           {(outcomes.mode??"main")==="needs"&&(
             <div className="space-y-4">
-              <Banner sub="Which human needs is this month serving?">Needs Driven</Banner>
+              <Banner sub="Which human needs is this Journey serving?">Needs Driven</Banner>
               {NEEDS_TAXONOMY.map(({key,label})=>(
                 <div key={key}>
                   <Label c={label}/>
                   <VoiceArea rows={2} value={(outcomes.needs??{})[key]??""}
-                    placeholder={`How is this month serving your need for ${label.toLowerCase()}?`}
+                    placeholder={`How is this Journey serving your need for ${label.toLowerCase()}?`}
                     onChange={v=>upO({...outcomes,needs:{...(outcomes.needs??{}),[key]:v}})}/>
                 </div>
               ))}
@@ -1133,7 +1154,7 @@ export default function JourneyJournal(){
       )}
 
       {/* ═══ LETTER ═══ */}
-      {tab==="letter"&&<OutcomeLetter/>}
+      {tab==="letter"&&<OutcomeLetter value={outcomes.letter||""} outcomes={outcomes.required} onChange={v=>upO({...outcomes,letter:v})}/>}
 
       {/* ═══ LANGUAGE ═══ */}
       {tab==="language"&&<YourLanguage/>}
@@ -1141,9 +1162,9 @@ export default function JourneyJournal(){
       {/* ═══ MONTH ═══ */}
       {tab==="month"&&(
         <main className="max-w-xl mx-auto px-4 pt-5">
-          <Banner sub="30 checks in a row. Imagine how much closer.">The Month</Banner>
+          <Banner sub={`${journeyDays} deliberate days. Make the direction visible.`}>Journey Progress</Banner>
           <div className="grid grid-cols-7 gap-1.5 mb-5">
-            {Array.from({length:31},(_,i)=>i+1).map(d=>{
+            {Array.from({length:journeyDays},(_,i)=>i+1).map(d=>{
               const rec=monthMap[d];const isToday=d===todayDayN;const isActive=d===dayN&&!isToday;
               const gap=rec?.effortRate>0&&rec?.rate>0?rec.effortRate-rec.rate:0;
               const act=activationMap[d];
@@ -1193,7 +1214,7 @@ export default function JourneyJournal(){
                 <div className="px-3 pb-3 flex flex-wrap gap-1">
                   {entries.filter(([,v])=>v.dayWord).map(([d,v])=>(
                     <span key={d} style={{fontSize:10,color:WC[10-v.dayScore]||GRAY,fontFamily:"Georgia,serif",fontStyle:"italic"}}>
-                      {v.dayWord}{+d<31?",":"."}
+                      {v.dayWord}{+d<journeyDays?",":"."}
                     </span>
                   ))}
                 </div>
@@ -1209,7 +1230,7 @@ export default function JourneyJournal(){
             </button>
             <button onClick={()=>setShowReveal(true)}
               style={{border:`2px solid ${NAVY}`,color:NAVY,fontWeight:800,fontSize:11,letterSpacing:".08em",padding:"8px 18px",background:"transparent",cursor:"pointer"}}>
-              COMPLETE THE MONTH →
+              COMPLETE THIS JOURNEY →
             </button>
             <div style={{fontFamily:"Georgia,serif",fontStyle:"italic",color:NAVY2,fontSize:13}}>
               {"“"}Everyday is Day 1.{"”"} — Tony Kates
@@ -1223,7 +1244,7 @@ export default function JourneyJournal(){
         <main className="max-w-xl mx-auto px-4 pt-5 space-y-5">
           <div style={{background:COAL,borderRadius:3,overflow:"hidden"}}>
             <div className="px-4 pt-4 pb-3" style={{borderBottom:`1px solid #1E3050`}}>
-              <div style={{color:AMBER,fontSize:9.5,fontWeight:800,letterSpacing:".15em"}}>AWARENESS COACH</div>
+              <div style={{color:AMBER,fontSize:9.5,fontWeight:800,letterSpacing:".15em"}}>JOURNEY GUIDE</div>
               <div style={{color:PAPER,fontFamily:"Georgia,serif",fontStyle:"italic",fontSize:16,marginTop:4,lineHeight:1.3}}>
                 Built on the Kates Doctrine.<br/>Not generic AI. Yours.
               </div>
@@ -1241,7 +1262,7 @@ export default function JourneyJournal(){
             </div>
 
             <div className="px-4 py-4">
-              <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em",marginBottom:4}}>ASK THE COACH</div>
+              <div style={{color:AMBER,fontSize:9,fontWeight:800,letterSpacing:".12em",marginBottom:4}}>ASK JOURNEY</div>
               <div style={{color:"#5A7090",fontSize:10.5,marginBottom:8}}>Any question. Answered in doctrine voice. No filler.</div>
               <VoiceArea rows={3} value={askQ}
                 placeholder="What obstacle keeps showing up? Why can’t I close the gap? What am I not seeing?"
@@ -1275,7 +1296,7 @@ export default function JourneyJournal(){
 
       <div className="max-w-xl mx-auto px-4 mt-10 text-center">
         <div style={{...stripes,height:8,opacity:.45}}/>
-        <div style={{fontSize:9.5,color:GRAY,marginTop:6,letterSpacing:".12em"}}>REFUZE · YNOT.LIFE · REVEAL v3</div>
+        <div style={{fontSize:9.5,color:GRAY,marginTop:6,letterSpacing:".12em"}}>JOURNEY JOURNAL · REVEAL INTELLIGENCE · REFUZE · YNOT.LIFE</div>
       </div>
       <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}`}</style>
     </div>

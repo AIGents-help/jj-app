@@ -1,7 +1,10 @@
-# The 1 Month Journey
+# Journey Journal
 
-An Awareness Journal built on the Kates Doctrine (REFUZE / YNOT.LIFE).
-Vite + React PWA with an AI Awareness Coach.
+A personal direction system built on the Journey Journal method and Kates Doctrine (REFUZE / YNOT.LIFE).
+
+Journey is the product. Journey Journal is the method. REVEAL is the pattern intelligence. REFUZE is the doctrine.
+
+The Vite + React PWA supports 1-, 7-, 30- and 90-day Journeys, guided Morning Direction and Evening Reckoning, an Outcome Letter, evidence-based objective review, voice entry and REVEAL pattern detection.
 
 ## Run locally
 ```
